@@ -17,49 +17,69 @@ body{font-family:'Manrope',sans-serif;background:var(--black);color:var(--text);
 body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");pointer-events:none;z-index:9999;opacity:.5}
 ::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:var(--black)}::-webkit-scrollbar-thumb{background:var(--red);border-radius:2px}
 
-/* SETUP */
-#setup-screen{position:fixed;inset:0;background:var(--black);z-index:10000;display:flex;align-items:center;justify-content:center;padding:1.5rem}
-.setup-box{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:2.5rem;max-width:520px;width:100%;text-align:center}
-.setup-emblem{width:72px;height:72px;background:linear-gradient(135deg,var(--red) 50%,var(--yellow) 100%);clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%);display:grid;place-items:center;font-family:'Bebas Neue',sans-serif;font-size:28px;color:#fff;margin:0 auto 1.5rem}
-.setup-box h2{font-family:'Bebas Neue',sans-serif;font-size:2rem;letter-spacing:2px;margin-bottom:.5rem}
-.setup-box p{font-size:.88rem;color:var(--muted);line-height:1.7;margin-bottom:1.5rem}
-.setup-steps{text-align:left;margin-bottom:1.5rem}
-.setup-steps li{font-size:.82rem;color:var(--muted);margin-bottom:.5rem;padding-left:1.2rem;position:relative;list-style:none}
-.setup-steps li::before{content:'→';position:absolute;left:0;color:var(--yellow)}
-.setup-steps a{color:var(--yellow);text-decoration:none}
-.api-input{width:100%;background:var(--dark);border:1.5px solid var(--border);color:var(--text);font-family:'Manrope',sans-serif;font-size:.9rem;padding:.85rem 1rem;border-radius:8px;outline:none;margin-bottom:1rem;transition:border-color .2s}
-.api-input:focus{border-color:var(--yellow)}
-.btn-setup{width:100%;background:var(--yellow);color:var(--black);font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;padding:.85rem;border-radius:8px;border:none;cursor:pointer;transition:background .2s}
-.btn-setup:hover{background:var(--yellow-lt)}
-.setup-skip{font-size:.78rem;color:var(--dimmed);margin-top:.75rem;cursor:pointer;text-decoration:underline}
-.setup-error{color:#E05C5C;font-size:.8rem;margin-top:.5rem;display:none;text-align:center}
-
-/* LOADING */
-#loading-overlay{position:fixed;inset:0;background:var(--black);z-index:9998;display:none;flex-direction:column;align-items:center;justify-content:center;gap:1.5rem}
-.loading-emblem{width:72px;height:72px;background:linear-gradient(135deg,var(--red) 50%,var(--yellow) 100%);clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%);display:grid;place-items:center;font-family:'Bebas Neue',sans-serif;font-size:28px;color:#fff;animation:spin 2s linear infinite}
+/* LOADING SCREEN */
+#loading-screen{
+  position:fixed;inset:0;background:var(--black);z-index:9000;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1.5rem;
+  transition:opacity .4s ease;
+}
+#loading-screen.fade-out{opacity:0;pointer-events:none}
+.loading-hex{
+  width:80px;height:80px;
+  background:linear-gradient(135deg,var(--red) 50%,var(--yellow) 100%);
+  clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%);
+  display:grid;place-items:center;
+  font-family:'Bebas Neue',sans-serif;font-size:32px;color:#fff;letter-spacing:2px;
+  animation:spin 2s linear infinite;
+}
 @keyframes spin{to{transform:rotate(360deg)}}
-.loading-text{font-family:'Barlow Condensed',sans-serif;font-size:14px;letter-spacing:3px;text-transform:uppercase;color:var(--muted)}
+.loading-label{font-family:'Barlow Condensed',sans-serif;font-size:13px;letter-spacing:3px;text-transform:uppercase;color:var(--muted)}
+.loading-bar-wrap{width:200px;height:3px;background:var(--border);border-radius:2px;overflow:hidden}
+.loading-bar{height:100%;background:linear-gradient(90deg,var(--red),var(--yellow));width:0%;transition:width .3s ease;border-radius:2px}
 
 /* NAV */
-nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:0 clamp(1rem,5vw,3rem);height:64px;background:rgba(11,11,15,.92);backdrop-filter:blur(16px);border-bottom:1px solid var(--border)}
-.nav-logo{display:flex;align-items:center;gap:.75rem;text-decoration:none;cursor:pointer}
-.logo-emblem{width:36px;height:36px;background:linear-gradient(135deg,var(--red) 50%,var(--yellow) 100%);clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%);display:grid;place-items:center;font-family:'Bebas Neue',sans-serif;font-size:16px;color:#fff}
-.logo-text{font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:3px}
-.logo-text span{color:var(--yellow)}
+nav{
+  position:sticky;top:0;z-index:100;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 clamp(1rem,5vw,3rem);height:64px;
+  background:rgba(11,11,15,.92);backdrop-filter:blur(16px);
+  border-bottom:1px solid var(--border);
+}
+.nav-logo{display:flex;align-items:center;gap:.75rem;cursor:pointer;text-decoration:none}
+.logo-hex{
+  width:36px;height:36px;
+  background:linear-gradient(135deg,var(--red) 50%,var(--yellow) 100%);
+  clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%);
+  display:grid;place-items:center;
+  font-family:'Bebas Neue',sans-serif;font-size:16px;color:#fff;
+}
+.logo-wordmark{font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:3px;color:var(--text)}
+.logo-wordmark span{color:var(--yellow)}
 .nav-links{display:flex;align-items:center;gap:.25rem}
-.nav-links button{font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);padding:.5rem .85rem;border-radius:6px;background:transparent;border:none;cursor:pointer;transition:color .2s,background .2s}
-.nav-links button:hover,.nav-links button.active{color:var(--text);background:var(--border)}
-.nav-links button.live-btn{color:var(--yellow)}
-.nav-links button.live-btn:hover{background:rgba(247,166,0,.1)}
-.nav-cta{font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;background:var(--red);color:#fff;padding:.45rem 1.1rem;border-radius:6px;text-decoration:none;transition:background .2s}
-.nav-cta:hover{background:var(--red-hot)}
-.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:4px;background:none;border:none}
-.hamburger span{width:22px;height:2px;background:var(--text);border-radius:2px}
+.nav-btn{
+  font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:600;
+  letter-spacing:1.5px;text-transform:uppercase;
+  color:var(--muted);padding:.5rem .85rem;border-radius:6px;
+  background:transparent;border:none;cursor:pointer;
+  transition:color .2s,background .2s;
+}
+.nav-btn:hover,.nav-btn.active{color:var(--text);background:var(--border)}
+.nav-btn.live{color:var(--yellow)}
+.nav-btn.live:hover{background:rgba(247,166,0,.1)}
+.nav-yt-btn{
+  font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;
+  letter-spacing:1.5px;text-transform:uppercase;
+  background:var(--red);color:#fff;
+  padding:.45rem 1.1rem;border-radius:6px;
+  text-decoration:none;transition:background .2s,transform .15s;
+}
+.nav-yt-btn:hover{background:var(--red-hot);transform:translateY(-1px)}
+.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;background:none;border:none;padding:4px}
+.hamburger span{width:22px;height:2px;background:var(--text);border-radius:2px;transition:.3s}
 
-/* MOBILE NAV */
-.mobile-nav{display:none;position:fixed;inset:64px 0 0;background:rgba(11,11,15,.97);backdrop-filter:blur(20px);z-index:99;flex-direction:column;align-items:center;justify-content:center;gap:2rem}
+.mobile-nav{display:none;position:fixed;inset:64px 0 0;background:rgba(11,11,15,.97);backdrop-filter:blur(20px);z-index:99;flex-direction:column;align-items:center;justify-content:center;gap:2.5rem}
 .mobile-nav.open{display:flex}
-.mobile-nav button{font-family:'Bebas Neue',sans-serif;font-size:2.5rem;letter-spacing:3px;color:var(--text);background:none;border:none;cursor:pointer}
+.mobile-nav button{font-family:'Bebas Neue',sans-serif;font-size:2.8rem;letter-spacing:4px;color:var(--text);background:none;border:none;cursor:pointer;transition:color .2s}
 .mobile-nav button:hover{color:var(--yellow)}
 
 /* LIVE BADGE */
@@ -67,426 +87,469 @@ nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-co
 .live-dot{width:6px;height:6px;border-radius:50%;background:#fff;animation:pulse 1.2s infinite}
 @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.7)}}
 
-/* LIVE ALERT */
-.live-alert{background:linear-gradient(90deg,rgba(166,25,46,.9),rgba(196,30,58,.7));border-bottom:2px solid var(--red-hot);padding:.9rem clamp(1rem,5vw,3rem);display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap}
+/* LIVE ALERT BAR */
+.live-alert{
+  background:linear-gradient(90deg,rgba(166,25,46,.95),rgba(196,30,58,.8));
+  border-bottom:2px solid var(--red-hot);
+  padding:.85rem clamp(1rem,5vw,3rem);
+  display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;
+}
 .live-alert-title{font-family:'Barlow Condensed',sans-serif;font-size:17px;font-weight:700}
 .live-alert-sub{font-size:13px;color:rgba(255,255,255,.7)}
-.btn-watch-live{background:#fff;color:var(--red);font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;padding:.5rem 1.2rem;border-radius:6px;text-decoration:none;white-space:nowrap;transition:transform .15s}
-.btn-watch-live:hover{transform:translateY(-1px)}
+.btn-watch{
+  background:#fff;color:var(--red);
+  font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:800;
+  letter-spacing:1.5px;text-transform:uppercase;
+  padding:.5rem 1.2rem;border-radius:6px;text-decoration:none;white-space:nowrap;
+  transition:transform .15s,box-shadow .15s;
+}
+.btn-watch:hover{transform:translateY(-1px);box-shadow:0 4px 12px rgba(0,0,0,.3)}
 
 /* HERO */
-.hero{position:relative;min-height:80vh;display:flex;align-items:flex-end;overflow:hidden}
-.hero-bg{position:absolute;inset:0;background:var(--dark)}
-.hero-bg img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.35}
-.hero-overlay{position:absolute;inset:0;background:linear-gradient(to top,var(--black) 0%,transparent 55%),linear-gradient(to right,var(--black) 0%,transparent 50%)}
-.hero-glow{position:absolute;top:0;right:0;width:60%;height:100%;background:radial-gradient(ellipse at 80% 20%,rgba(166,25,46,.2) 0%,transparent 60%);pointer-events:none}
-.hero-content{position:relative;z-index:2;padding:clamp(2rem,8vw,5rem) clamp(1rem,5vw,3rem);max-width:780px}
-.hero-tag{display:inline-flex;align-items:center;gap:.5rem;margin-bottom:1rem;font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--yellow)}
-.hero-tag::before{content:'';width:24px;height:2px;background:var(--yellow)}
-.hero h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(3rem,9vw,7rem);line-height:.92;letter-spacing:2px;margin-bottom:1.2rem}
+.hero{position:relative;min-height:82vh;display:flex;align-items:flex-end;overflow:hidden}
+.hero-media{position:absolute;inset:0;overflow:hidden}
+.hero-media img{width:100%;height:100%;object-fit:cover;transition:transform 8s ease;transform:scale(1.05)}
+.hero-media img.loaded{transform:scale(1)}
+.hero-grad{position:absolute;inset:0;background:linear-gradient(to top,var(--black) 0%,rgba(11,11,15,.7) 40%,rgba(11,11,15,.2) 70%,transparent 100%)}
+.hero-grad2{position:absolute;inset:0;background:linear-gradient(to right,var(--black) 0%,transparent 55%)}
+.hero-glow{position:absolute;inset:0;background:radial-gradient(ellipse at 75% 15%,rgba(166,25,46,.2) 0%,transparent 55%)}
+.hero-content{position:relative;z-index:2;padding:clamp(2rem,8vw,5rem) clamp(1rem,5vw,3rem);max-width:800px}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:.6rem;font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--yellow);margin-bottom:1rem}
+.hero-eyebrow::before{content:'';width:28px;height:2px;background:var(--yellow)}
+.hero h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(2rem,5vw,3.8rem);line-height:1.05;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:1.2rem;word-break:break-word}
 .hero h1 em{color:var(--yellow);font-style:normal}
-.hero p{font-size:clamp(.9rem,2vw,1rem);color:var(--muted);line-height:1.7;max-width:520px;margin-bottom:2rem}
-.hero-actions{display:flex;flex-wrap:wrap;gap:1rem}
+.hero p{font-size:clamp(.9rem,2vw,1.05rem);color:var(--muted);line-height:1.75;max-width:540px;margin-bottom:2rem}
+.hero-btns{display:flex;flex-wrap:wrap;gap:1rem}
 .btn-primary{display:inline-flex;align-items:center;gap:.5rem;background:var(--yellow);color:var(--black);font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;padding:.8rem 1.8rem;border-radius:8px;text-decoration:none;border:none;cursor:pointer;transition:background .2s,transform .15s,box-shadow .2s}
 .btn-primary:hover{background:var(--yellow-lt);transform:translateY(-2px);box-shadow:0 8px 28px rgba(247,166,0,.3)}
-.btn-outline{display:inline-flex;align-items:center;gap:.5rem;background:transparent;color:var(--text);font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:.8rem 1.8rem;border-radius:8px;text-decoration:none;border:1.5px solid var(--border);cursor:pointer;transition:border-color .2s,transform .15s}
-.btn-outline:hover{border-color:var(--muted);transform:translateY(-2px)}
+.btn-ghost{display:inline-flex;align-items:center;gap:.5rem;background:transparent;color:var(--text);font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:.8rem 1.8rem;border-radius:8px;text-decoration:none;border:1.5px solid var(--border);cursor:pointer;transition:border-color .2s,transform .15s}
+.btn-ghost:hover{border-color:var(--muted);transform:translateY(-2px)}
+
+/* CHANNEL STATS BAR */
+.stats-bar{
+  display:flex;gap:2rem;flex-wrap:wrap;align-items:center;
+  background:linear-gradient(90deg,rgba(247,166,0,.06),transparent);
+  border:1px solid rgba(247,166,0,.15);
+  border-radius:12px;padding:1.25rem 1.75rem;margin-bottom:0;
+}
+.stats-bar-avatar{width:52px;height:52px;border-radius:50%;object-fit:cover;border:2px solid var(--yellow);flex-shrink:0}
+.stat-item{display:flex;flex-direction:column}
+.stat-val{font-family:'Barlow Condensed',sans-serif;font-size:1.6rem;font-weight:700;color:var(--yellow);line-height:1}
+.stat-lbl{font-size:.72rem;color:var(--dimmed);letter-spacing:.8px;text-transform:uppercase;margin-top:.15rem}
+.stats-bar-cta{margin-left:auto}
 
 /* SECTIONS */
 section{padding:clamp(3rem,8vw,5rem) clamp(1rem,5vw,3rem)}
-.section-header{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:2rem;flex-wrap:wrap;gap:.75rem}
-.section-label{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--yellow);margin-bottom:.35rem}
-.section-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(2rem,5vw,3rem);letter-spacing:2px}
-.section-link{font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);text-decoration:none;display:flex;align-items:center;gap:.3rem;background:none;border:none;cursor:pointer;transition:color .2s}
-.section-link:hover{color:var(--yellow)}
-.section-link::after{content:'→'}
+.sec-header{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:2rem;flex-wrap:wrap;gap:.75rem}
+.sec-eyebrow{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--yellow);margin-bottom:.3rem}
+.sec-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(2rem,5vw,3rem);letter-spacing:2px;line-height:1}
+.sec-link{font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);text-decoration:none;display:flex;align-items:center;gap:.3rem;background:none;border:none;cursor:pointer;transition:color .2s}
+.sec-link:hover{color:var(--yellow)}
+.sec-link::after{content:'→'}
 .divider{height:1px;background:var(--border);margin:0 clamp(1rem,5vw,3rem)}
 
-/* VIDEO CARDS */
-.video-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,300px),1fr));gap:1.25rem}
-.video-card{background:var(--card);border:1px solid var(--border);border-radius:12px;overflow:hidden;cursor:pointer;transition:transform .25s,border-color .25s,box-shadow .25s;text-decoration:none;color:inherit;display:block}
-.video-card:hover{transform:translateY(-4px);border-color:rgba(247,166,0,.3);box-shadow:0 16px 40px rgba(0,0,0,.5)}
-.thumb-wrap{position:relative;aspect-ratio:16/9;overflow:hidden;background:var(--dark)}
-.thumb-wrap img{width:100%;height:100%;object-fit:cover;transition:transform .4s}
-.video-card:hover .thumb-wrap img{transform:scale(1.04)}
-.thumb-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.7) 0%,transparent 50%);display:flex;align-items:center;justify-content:center}
-.play-btn{width:52px;height:52px;background:rgba(247,166,0,.9);border-radius:50%;display:grid;place-items:center;opacity:0;transform:scale(.7);transition:opacity .25s,transform .25s}
-.video-card:hover .play-btn{opacity:1;transform:scale(1)}
-.play-btn svg{width:20px;height:20px;fill:var(--black);margin-left:2px}
-.thumb-duration{position:absolute;bottom:8px;right:8px;background:rgba(0,0,0,.8);color:#fff;font-size:11px;font-weight:600;padding:2px 6px;border-radius:4px}
-.thumb-live-badge{position:absolute;top:8px;left:8px}
-.card-body{padding:1rem 1.1rem 1.2rem}
-.card-meta{display:flex;align-items:center;justify-content:space-between;margin-bottom:.5rem}
-.card-cat{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--yellow)}
-.card-views{font-size:12px;color:var(--dimmed)}
-.card-title{font-family:'Barlow Condensed',sans-serif;font-size:17px;font-weight:700;line-height:1.3;margin-bottom:.5rem}
-.card-date{font-size:12px;color:var(--dimmed)}
+/* FEATURED VIDEO */
+.featured-layout{display:grid;grid-template-columns:1fr 380px;gap:2.5rem;align-items:center}
+.feat-thumb{
+  position:relative;aspect-ratio:16/9;border-radius:16px;overflow:hidden;
+  background:var(--card);
+  box-shadow:0 0 0 1px var(--border),0 40px 80px rgba(0,0,0,.7);
+  display:block;text-decoration:none;
+}
+.feat-thumb img{width:100%;height:100%;object-fit:cover;transition:transform .5s ease}
+.feat-thumb:hover img{transform:scale(1.03)}
+.feat-thumb-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.65) 0%,transparent 60%);display:flex;align-items:center;justify-content:center}
+.feat-play{width:76px;height:76px;background:rgba(247,166,0,.95);border-radius:50%;display:grid;place-items:center;box-shadow:0 0 0 14px rgba(247,166,0,.15);transition:transform .2s,box-shadow .2s}
+.feat-thumb:hover .feat-play{transform:scale(1.1);box-shadow:0 0 0 22px rgba(247,166,0,.1)}
+.feat-play svg{width:30px;height:30px;fill:var(--black);margin-left:3px}
+.feat-info{display:flex;flex-direction:column;gap:1.1rem}
+.feat-tag{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--yellow)}
+.feat-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(1.8rem,3vw,2.6rem);line-height:1;letter-spacing:1px}
+.feat-desc{font-size:.88rem;color:var(--muted);line-height:1.75}
+.feat-stats{display:flex;gap:1.5rem;flex-wrap:wrap}
+.feat-stat{display:flex;flex-direction:column}
+.feat-stat-val{font-family:'Barlow Condensed',sans-serif;font-size:1.4rem;font-weight:700;color:var(--yellow)}
+.feat-stat-lbl{font-size:.72rem;color:var(--dimmed);letter-spacing:.5px;text-transform:uppercase}
 
-/* FEATURED */
-.featured-wrap{display:grid;grid-template-columns:1fr 360px;gap:2rem;align-items:center}
-.featured-thumb{position:relative;aspect-ratio:16/9;border-radius:14px;overflow:hidden;background:var(--dark);box-shadow:0 0 0 1px var(--border),0 32px 80px rgba(0,0,0,.6);display:block;text-decoration:none}
-.featured-thumb img{width:100%;height:100%;object-fit:cover}
-.featured-play-wrap{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.6) 0%,transparent 60%);display:flex;align-items:center;justify-content:center}
-.featured-play{width:72px;height:72px;background:rgba(247,166,0,.95);border-radius:50%;display:grid;place-items:center;transition:transform .2s,box-shadow .2s;box-shadow:0 0 0 12px rgba(247,166,0,.15)}
-.featured-play:hover{transform:scale(1.08)}
-.featured-play svg{width:28px;height:28px;fill:var(--black);margin-left:3px}
-.featured-info{display:flex;flex-direction:column;gap:1rem}
-.featured-tag{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--yellow)}
-.featured-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(1.8rem,3.5vw,2.6rem);line-height:1;letter-spacing:1px}
-.featured-desc{font-size:.88rem;color:var(--muted);line-height:1.7}
-.featured-stats{display:flex;gap:1.5rem;flex-wrap:wrap}
-.stat{display:flex;flex-direction:column;gap:.1rem}
-.stat-value{font-family:'Barlow Condensed',sans-serif;font-size:1.4rem;font-weight:700;color:var(--yellow)}
-.stat-label{font-size:.75rem;color:var(--dimmed);letter-spacing:.5px}
+/* VIDEO GRID */
+.video-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,300px),1fr));gap:1.25rem}
+.vcard{background:var(--card);border:1px solid var(--border);border-radius:12px;overflow:hidden;cursor:pointer;transition:transform .25s,border-color .25s,box-shadow .25s;text-decoration:none;color:inherit;display:block}
+.vcard:hover{transform:translateY(-4px);border-color:rgba(247,166,0,.3);box-shadow:0 16px 40px rgba(0,0,0,.5)}
+.vcard-thumb{position:relative;aspect-ratio:16/9;overflow:hidden;background:var(--dark)}
+.vcard-thumb img{width:100%;height:100%;object-fit:cover;transition:transform .4s}
+.vcard:hover .vcard-thumb img{transform:scale(1.05)}
+.vcard-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.65) 0%,transparent 55%);display:flex;align-items:center;justify-content:center}
+.play-circle{width:52px;height:52px;background:rgba(247,166,0,.92);border-radius:50%;display:grid;place-items:center;opacity:0;transform:scale(.65);transition:opacity .25s,transform .25s}
+.vcard:hover .play-circle{opacity:1;transform:scale(1)}
+.play-circle svg{width:20px;height:20px;fill:var(--black);margin-left:2px}
+.vcard-dur{position:absolute;bottom:8px;right:8px;background:rgba(0,0,0,.82);color:#fff;font-size:11px;font-weight:600;letter-spacing:.3px;padding:2px 7px;border-radius:4px}
+.vcard-live-tag{position:absolute;top:8px;left:8px}
+.vcard-body{padding:1rem 1.1rem 1.25rem}
+.vcard-meta{display:flex;align-items:center;justify-content:space-between;margin-bottom:.45rem}
+.vcard-cat{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--yellow)}
+.vcard-views{font-size:11px;color:var(--dimmed)}
+.vcard-title{font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:700;line-height:1.35;margin-bottom:.4rem}
+.vcard-date{font-size:11px;color:var(--dimmed)}
 
 /* SOCIAL */
-.social-section{background:var(--dark);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+.social-band{background:var(--dark);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
 .social-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:1rem}
-.social-card{display:flex;align-items:center;gap:1rem;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.2rem 1.4rem;text-decoration:none;color:var(--text);transition:transform .2s,border-color .2s}
-.social-card:hover{transform:translateY(-3px)}
-.social-card.yt:hover{border-color:#FF0000}
-.social-card.ig:hover{border-color:#E1306C}
-.social-card.tw:hover{border-color:#1DA1F2}
-.social-card.tk:hover{border-color:#69C9D0}
-.social-icon{width:44px;height:44px;border-radius:10px;display:grid;place-items:center;flex-shrink:0;font-size:20px}
-.yt .social-icon{background:rgba(255,0,0,.15)}
-.ig .social-icon{background:rgba(225,48,108,.15)}
-.tw .social-icon{background:rgba(29,161,242,.15)}
-.tk .social-icon{background:rgba(105,201,208,.15)}
-.social-info-platform{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted)}
-.social-info-handle{font-size:14px;font-weight:600}
-.social-info-count{font-size:12px;color:var(--yellow);font-weight:600;margin-top:.15rem}
+.soc-card{display:flex;align-items:center;gap:1rem;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.2rem 1.4rem;text-decoration:none;color:var(--text);transition:transform .2s,border-color .25s}
+.soc-card:hover{transform:translateY(-3px)}
+.soc-card.yt:hover{border-color:rgba(255,0,0,.5)}
+.soc-card.ig:hover{border-color:rgba(225,48,108,.5)}
+.soc-card.tw:hover{border-color:rgba(29,161,242,.5)}
+.soc-card.lt:hover{border-color:rgba(57,183,97,.5)}
+.soc-icon{width:44px;height:44px;border-radius:10px;display:grid;place-items:center;flex-shrink:0;font-size:20px}
+.yt .soc-icon{background:rgba(255,0,0,.12)}
+.ig .soc-icon{background:rgba(225,48,108,.12)}
+.tw .soc-icon{background:rgba(29,161,242,.12)}
+.lt .soc-icon{background:rgba(57,183,97,.12)}
+.soc-platform{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--dimmed)}
+.soc-handle{font-size:14px;font-weight:600;margin-top:.1rem}
+.soc-count{font-size:12px;color:var(--yellow);font-weight:600;margin-top:.2rem}
 
-/* CTA */
-.cta-strip{background:linear-gradient(135deg,rgba(166,25,46,.25) 0%,transparent 60%),var(--dark);border-top:1px solid rgba(166,25,46,.3);border-bottom:1px solid rgba(166,25,46,.3);padding:clamp(2.5rem,6vw,4rem) clamp(1rem,5vw,3rem);text-align:center}
+/* CTA BAND */
+.cta-band{
+  background:linear-gradient(135deg,rgba(166,25,46,.22) 0%,transparent 55%),var(--dark);
+  border-top:1px solid rgba(166,25,46,.25);border-bottom:1px solid rgba(166,25,46,.25);
+  padding:clamp(3rem,7vw,5rem) clamp(1rem,5vw,3rem);text-align:center;
+}
 .cta-eyebrow{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--yellow);margin-bottom:.75rem}
-.cta-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(2.5rem,6vw,4.5rem);letter-spacing:2px;margin-bottom:1rem}
-.cta-sub{font-size:.95rem;color:var(--muted);margin-bottom:2rem;max-width:480px;margin-left:auto;margin-right:auto;line-height:1.7}
-.cta-actions{display:flex;justify-content:center;flex-wrap:wrap;gap:1rem}
+.cta-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(2.5rem,6vw,4.8rem);letter-spacing:2px;margin-bottom:.75rem}
+.cta-sub{font-size:.95rem;color:var(--muted);margin-bottom:2rem;max-width:500px;margin-left:auto;margin-right:auto;line-height:1.75}
+.cta-btns{display:flex;justify-content:center;flex-wrap:wrap;gap:1rem}
 
 /* LIVE PAGE */
-.live-embed-outer{position:relative;aspect-ratio:16/9;border-radius:14px;overflow:hidden;background:#000;border:1px solid var(--border);max-width:860px;margin-bottom:2rem}
+.live-embed-outer{position:relative;aspect-ratio:16/9;border-radius:14px;overflow:hidden;background:#000;border:1px solid var(--border);max-width:900px;margin-bottom:2rem}
 .live-embed-outer iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
-.no-live-msg{text-align:center;padding:3rem;background:var(--card);border:1px solid var(--border);border-radius:14px;max-width:860px;margin-bottom:2rem}
-.no-live-msg .icon{font-size:3.5rem;margin-bottom:1rem}
-.no-live-msg h3{font-family:'Bebas Neue',sans-serif;font-size:2rem;letter-spacing:2px;color:var(--muted);margin-bottom:.5rem}
-.no-live-msg p{font-size:.9rem;color:var(--dimmed)}
-
-/* CHANNEL STATS */
-.channel-stats{display:flex;gap:2rem;flex-wrap:wrap;align-items:center;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.25rem 1.75rem;margin-bottom:2rem}
-.ch-stat{display:flex;flex-direction:column}
-.ch-stat-val{font-family:'Barlow Condensed',sans-serif;font-size:1.6rem;font-weight:700;color:var(--yellow)}
-.ch-stat-lbl{font-size:.75rem;color:var(--dimmed);letter-spacing:.5px;text-transform:uppercase}
-.ch-avatar{width:56px;height:56px;border-radius:50%;object-fit:cover;border:2px solid var(--yellow)}
+.no-live-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:4rem 2rem;text-align:center;max-width:900px;margin-bottom:2rem}
+.no-live-card .icon{font-size:4rem;margin-bottom:1rem}
+.no-live-card h3{font-family:'Bebas Neue',sans-serif;font-size:2.2rem;letter-spacing:2px;color:var(--muted);margin-bottom:.5rem}
+.no-live-card p{font-size:.9rem;color:var(--dimmed);line-height:1.7}
 
 /* ABOUT */
 .about-hero{text-align:center;padding:clamp(3rem,8vw,6rem) clamp(1rem,5vw,3rem);max-width:700px;margin:0 auto}
-.about-emblem{width:100px;height:100px;background:linear-gradient(135deg,var(--red) 50%,var(--yellow) 100%);clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%);display:grid;place-items:center;font-family:'Bebas Neue',sans-serif;font-size:42px;color:#fff;margin:0 auto 2rem}
-.about-hero h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(2.5rem,7vw,5rem);letter-spacing:3px;margin-bottom:1rem}
-.about-hero p{font-size:1rem;color:var(--muted);line-height:1.75}
-.value-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:1.25rem;max-width:900px;margin:0 auto;padding:0 clamp(1rem,5vw,3rem) clamp(3rem,6vw,4rem)}
-.value-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.5rem}
-.value-icon{font-size:2rem;margin-bottom:.75rem}
-.value-title{font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:700;margin-bottom:.5rem}
-.value-text{font-size:.84rem;color:var(--muted);line-height:1.65}
+.about-hex{width:100px;height:100px;background:linear-gradient(135deg,var(--red) 50%,var(--yellow) 100%);clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%);display:grid;place-items:center;font-family:'Bebas Neue',sans-serif;font-size:42px;color:#fff;margin:0 auto 2rem}
+.about-hero h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(2.5rem,7vw,5.5rem);letter-spacing:3px;margin-bottom:1rem}
+.about-hero p{font-size:1rem;color:var(--muted);line-height:1.8}
+.values-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:1.25rem;max-width:900px;margin:0 auto;padding:0 clamp(1rem,5vw,3rem) clamp(3rem,6vw,4rem)}
+.val-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.5rem;transition:border-color .2s}
+.val-card:hover{border-color:rgba(247,166,0,.25)}
+.val-icon{font-size:2rem;margin-bottom:.75rem}
+.val-title{font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:700;letter-spacing:.5px;margin-bottom:.5rem}
+.val-text{font-size:.84rem;color:var(--muted);line-height:1.65}
 
 /* CONTACT */
 .contact-wrap{max-width:680px;margin:0 auto;padding:clamp(2rem,6vw,4rem) clamp(1rem,5vw,3rem)}
-.contact-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:2rem;margin-bottom:1.5rem;display:flex;align-items:center;gap:1.5rem;text-decoration:none;color:inherit;transition:border-color .2s}
-.contact-card:hover{border-color:rgba(247,166,0,.3)}
-.contact-icon{width:56px;height:56px;border-radius:12px;background:rgba(247,166,0,.1);display:grid;place-items:center;font-size:24px;flex-shrink:0}
-.contact-label{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--dimmed);margin-bottom:.25rem}
-.contact-val{font-size:1.1rem;font-weight:600}
-.contact-note{font-size:.8rem;color:var(--muted);margin-top:.15rem}
-
-/* PAGE */
-.page{display:none}
-.page.active{display:block}
-@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
-.page.active>*{animation:fadeUp .35s ease both}
-.page.active>*:nth-child(2){animation-delay:.05s}
-.page.active>*:nth-child(3){animation-delay:.1s}
-
-/* SKELETON */
-.skeleton{background:linear-gradient(90deg,var(--card) 25%,var(--border) 50%,var(--card) 75%);background-size:200% 100%;animation:shimmer 1.5s infinite;border-radius:8px}
-@keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
-.skel-thumb{aspect-ratio:16/9;border-radius:8px}
-.skel-line{height:14px;margin-top:8px;border-radius:4px}
-.skel-line.w90{width:90%}.skel-line.w60{width:60%}.skel-line.w40{width:40%}
+.con-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:2rem;margin-bottom:1.5rem;display:flex;align-items:center;gap:1.5rem;text-decoration:none;color:inherit;transition:transform .2s,border-color .2s}
+.con-card:hover{transform:translateY(-2px);border-color:rgba(247,166,0,.25)}
+.con-icon{width:56px;height:56px;border-radius:12px;background:rgba(247,166,0,.08);border:1px solid rgba(247,166,0,.15);display:grid;place-items:center;font-size:24px;flex-shrink:0}
+.con-platform{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--dimmed);margin-bottom:.25rem}
+.con-val{font-size:1.05rem;font-weight:600}
+.con-note{font-size:.8rem;color:var(--muted);margin-top:.2rem}
 
 /* FOOTER */
-footer{background:var(--dark);border-top:1px solid var(--border);padding:clamp(2rem,5vw,3.5rem) clamp(1rem,5vw,3rem) 1.5rem}
-.footer-top{display:grid;grid-template-columns:1.5fr repeat(3,1fr);gap:2.5rem;margin-bottom:2.5rem}
+footer{background:var(--dark);border-top:1px solid var(--border);padding:clamp(2.5rem,5vw,4rem) clamp(1rem,5vw,3rem) 1.5rem}
+.footer-grid{display:grid;grid-template-columns:1.5fr repeat(3,1fr);gap:2.5rem;margin-bottom:2.5rem}
 .footer-brand p{font-size:.85rem;color:var(--muted);line-height:1.7;margin-top:.75rem;max-width:280px}
 .footer-col h4{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--dimmed);margin-bottom:1rem}
-.footer-col ul{list-style:none;display:flex;flex-direction:column;gap:.55rem}
-.footer-col ul li a{font-size:.85rem;color:var(--muted);text-decoration:none;background:none;border:none;cursor:pointer;transition:color .2s}
+.footer-col ul{list-style:none;display:flex;flex-direction:column;gap:.6rem}
+.footer-col ul li a{font-size:.85rem;color:var(--muted);text-decoration:none;background:none;border:none;cursor:pointer;transition:color .2s;font-family:'Manrope',sans-serif}
 .footer-col ul li a:hover{color:var(--yellow)}
 .footer-bottom{padding-top:1.5rem;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.75rem}
 .footer-copy{font-size:.8rem;color:var(--dimmed)}
 .footer-copy span{color:var(--red)}
-.footer-gs-badge{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--dimmed);display:flex;align-items:center;gap:.4rem}
-.footer-gs-badge::before{content:'';width:10px;height:10px;border-radius:50%;background:linear-gradient(135deg,var(--red),var(--yellow))}
+.footer-badge{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--dimmed);display:flex;align-items:center;gap:.4rem}
+.footer-badge::before{content:'';width:10px;height:10px;border-radius:50%;background:linear-gradient(135deg,var(--red),var(--yellow))}
 
-/* DEMO BANNER */
-.demo-banner{background:rgba(247,166,0,.1);border-bottom:1px solid rgba(247,166,0,.2);padding:.6rem clamp(1rem,5vw,3rem);font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:600;letter-spacing:.5px;color:var(--yellow);display:flex;align-items:center;gap:.5rem}
+/* ERROR BANNER */
+.err-banner{background:rgba(224,92,92,.1);border:1px solid rgba(224,92,92,.3);border-radius:10px;padding:1rem 1.5rem;font-size:.88rem;color:#E05C5C;display:flex;align-items:center;gap:.75rem;margin-bottom:1.5rem}
 
-@media(max-width:900px){.featured-wrap{grid-template-columns:1fr}.featured-info{order:-1}.footer-top{grid-template-columns:1fr 1fr}}
-@media(max-width:640px){.nav-links,.nav-cta{display:none}.hamburger{display:flex}.footer-top{grid-template-columns:1fr}}
+/* SKELETON */
+.sk{background:linear-gradient(90deg,var(--card) 25%,var(--border) 50%,var(--card) 75%);background-size:200% 100%;animation:shimmer 1.5s infinite;border-radius:8px}
+@keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
+.sk-thumb{aspect-ratio:16/9;border-radius:10px}
+.sk-line{height:13px;border-radius:4px;margin-top:8px}
+.sk-line.w90{width:90%}.sk-line.w60{width:60%}.sk-line.w40{width:40%}
+
+/* PAGE TRANSITIONS */
+.page{display:none}
+.page.active{display:block}
+@keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+.page.active>*{animation:fadeUp .4s ease both}
+.page.active>*:nth-child(2){animation-delay:.06s}
+.page.active>*:nth-child(3){animation-delay:.12s}
+.page.active>*:nth-child(4){animation-delay:.18s}
+
+/* LOAD MORE */
+#load-more-btn{display:none;margin:2.5rem auto 0;font-size:14px;padding:.75rem 2rem}
+
+/* RESPONSIVE */
+@media(max-width:960px){.featured-layout{grid-template-columns:1fr}.feat-info{order:-1}.footer-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:640px){.nav-links,.nav-yt-btn{display:none}.hamburger{display:flex}.footer-grid{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
 
-<!-- SETUP -->
-<div id="setup-screen">
-  <div class="setup-box">
-    <div class="setup-emblem">P4</div>
-    <h2>YouTube API Bağlantısı</h2>
-    <p>Gerçek P4 Otopark videolarını çekmek için ücretsiz bir YouTube Data API v3 key gerekiyor.</p>
-    <ul class="setup-steps">
-      <li><a href="https://console.cloud.google.com" target="_blank">console.cloud.google.com</a> adresine git</li>
-      <li>Yeni proje oluştur → "API ve Hizmetler" → "Kitaplık"</li>
-      <li>"YouTube Data API v3" ara → Etkinleştir</li>
-      <li>"Kimlik Bilgileri" → "API Anahtarı Oluştur" → Kopyala ve yapıştır</li>
-    </ul>
-    <input class="api-input" id="api-key-input" type="text" placeholder="AIzaSy... API key'ini buraya yapıştır">
-    <div class="setup-error" id="setup-error">⚠ API key geçersiz veya bağlantı hatası. Tekrar dene.</div>
-    <button class="btn-setup" onclick="connectAPI()">🔗 Bağlan ve Videoları Yükle</button>
-    <div class="setup-skip" onclick="skipSetup()">Demo modunda devam et (gerçek veri olmadan önizle)</div>
-  </div>
-</div>
-
-<!-- LOADING -->
-<div id="loading-overlay">
-  <div class="loading-emblem">P4</div>
-  <div class="loading-text">YouTube'dan veriler çekiliyor...</div>
+<!-- LOADING SCREEN -->
+<div id="loading-screen">
+  <div class="loading-hex">P4</div>
+  <div class="loading-label" id="loading-label">Bağlanıyor...</div>
+  <div class="loading-bar-wrap"><div class="loading-bar" id="loading-bar"></div></div>
 </div>
 
 <!-- NAV -->
-<nav id="main-nav" style="display:none">
-  <div class="nav-logo" onclick="showPage('home')">
-    <div class="logo-emblem">P4</div>
-    <div class="logo-text">P4 <span>OTOPARK</span></div>
+<nav>
+  <div class="nav-logo" onclick="goPage('home')">
+    <div class="logo-hex">P4</div>
+    <div class="logo-wordmark">P4 <span>OTOPARK</span></div>
   </div>
   <div class="nav-links">
-    <button onclick="showPage('home')" class="active" id="nav-home">Ana Sayfa</button>
-    <button onclick="showPage('videos')" id="nav-videos">Videolar</button>
-    <button onclick="showPage('live')" id="nav-live" class="live-btn">🔴 Canlı</button>
-    <button onclick="showPage('about')" id="nav-about">Hakkında</button>
-    <button onclick="showPage('contact')" id="nav-contact">İletişim</button>
+    <button class="nav-btn active" id="nav-home" onclick="goPage('home')">Ana Sayfa</button>
+    <button class="nav-btn" id="nav-videos" onclick="goPage('videos')">Videolar</button>
+    <button class="nav-btn live" id="nav-live" onclick="goPage('live')">🔴 Canlı</button>
+    <button class="nav-btn" id="nav-about" onclick="goPage('about')">Hakkında</button>
+    <button class="nav-btn" id="nav-contact" onclick="goPage('contact')">İletişim</button>
   </div>
-  <a href="https://www.youtube.com/@P4Otopark" target="_blank" class="nav-cta">Kanala Git →</a>
-  <button class="hamburger" onclick="toggleMobileNav()"><span></span><span></span><span></span></button>
+  <a href="https://www.youtube.com/@P4Otopark" target="_blank" class="nav-yt-btn">Kanala Git →</a>
+  <button class="hamburger" onclick="toggleMob()"><span></span><span></span><span></span></button>
 </nav>
 
-<div class="mobile-nav" id="mobileNav">
-  <button onclick="showPage('home');toggleMobileNav()">Ana Sayfa</button>
-  <button onclick="showPage('videos');toggleMobileNav()">Videolar</button>
-  <button onclick="showPage('live');toggleMobileNav()" style="color:var(--yellow)">🔴 Canlı</button>
-  <button onclick="showPage('about');toggleMobileNav()">Hakkında</button>
-  <button onclick="showPage('contact');toggleMobileNav()">İletişim</button>
+<!-- MOBILE NAV -->
+<div class="mobile-nav" id="mob-nav">
+  <button onclick="goPage('home');toggleMob()">Ana Sayfa</button>
+  <button onclick="goPage('videos');toggleMob()">Videolar</button>
+  <button onclick="goPage('live');toggleMob()" style="color:var(--yellow)">🔴 Canlı</button>
+  <button onclick="goPage('about');toggleMob()">Hakkında</button>
+  <button onclick="goPage('contact');toggleMob()">İletişim</button>
 </div>
 
-<!-- DEMO BANNER -->
-<div id="demo-banner" class="demo-banner" style="display:none">
-  ⚡ Demo Modu — Örnek veriler gösteriliyor.
-  <span style="margin-left:auto;cursor:pointer;text-decoration:underline" onclick="document.getElementById('setup-screen').style.display='flex';document.getElementById('main-nav').style.display='none';document.getElementById('demo-banner').style.display='none';document.getElementById('main-footer').style.display='none'">API Key Gir →</span>
-</div>
-
-<!-- HOME -->
+<!-- ═══════════ HOME ═══════════ -->
 <div id="page-home" class="page">
-  <div id="live-alert-bar" style="display:none" class="live-alert">
+  <!-- Live Alert -->
+  <div id="live-bar" style="display:none" class="live-alert">
     <div style="display:flex;align-items:center;gap:1rem;flex:1;flex-wrap:wrap">
       <div class="live-badge"><div class="live-dot"></div>CANLI YAYIN</div>
       <div>
-        <div class="live-alert-title" id="live-alert-title">Canlı Yayın</div>
+        <div class="live-alert-title" id="live-bar-title">Canlı Yayın</div>
         <div class="live-alert-sub">P4 Otopark</div>
       </div>
     </div>
-    <a href="#" id="live-alert-link" target="_blank" class="btn-watch-live">Şimdi İzle →</a>
+    <a id="live-bar-link" href="#" target="_blank" class="btn-watch">Şimdi İzle →</a>
   </div>
 
-  <div class="hero" id="hero-section">
-    <div class="hero-bg"><img id="hero-img" src="" alt="" onerror="this.style.opacity='0'"></div>
-    <div class="hero-overlay"></div>
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-media">
+      <img id="hero-thumb" src="" alt="" onload="this.classList.add('loaded')" onerror="this.style.opacity='0'">
+    </div>
+    <div class="hero-grad"></div>
+    <div class="hero-grad2"></div>
     <div class="hero-glow"></div>
     <div class="hero-content">
-      <div class="hero-tag">Son Video</div>
+      <div class="hero-eyebrow">Son Video</div>
       <h1 id="hero-title">P4 <em>OTOPARK</em></h1>
       <p id="hero-desc">Galatasaray odaklı maç analizleri, transfer gündemi ve canlı yayınlar.</p>
-      <div class="hero-actions">
-        <a href="#" id="hero-btn" target="_blank" class="btn-primary">
+      <div class="hero-btns">
+        <a id="hero-watch-btn" href="#" target="_blank" class="btn-primary">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>Videoyu İzle
         </a>
-        <button class="btn-outline" onclick="showPage('videos')">Tüm İçerikler →</button>
+        <button class="btn-ghost" onclick="goPage('videos')">Tüm İçerikler →</button>
       </div>
     </div>
   </div>
 
+  <!-- Channel Stats -->
   <section style="padding-bottom:0">
-    <div id="ch-stats-bar" class="channel-stats" style="display:none">
-      <img id="ch-avatar" class="ch-avatar" src="" alt="P4 Otopark">
-      <div class="ch-stat"><div class="ch-stat-val" id="stat-subs">—</div><div class="ch-stat-lbl">Abone</div></div>
-      <div class="ch-stat"><div class="ch-stat-val" id="stat-views">—</div><div class="ch-stat-lbl">Toplam İzlenme</div></div>
-      <div class="ch-stat"><div class="ch-stat-val" id="stat-vids">—</div><div class="ch-stat-lbl">Video</div></div>
-      <div style="margin-left:auto">
-        <a href="https://www.youtube.com/@P4Otopark" target="_blank" class="btn-primary" style="font-size:13px;padding:.6rem 1.2rem">▶ YouTube'da Abone Ol</a>
+    <div id="stats-bar" class="stats-bar" style="display:none">
+      <img id="ch-avatar" class="stats-bar-avatar" src="" alt="P4 Otopark">
+      <div class="stat-item"><div class="stat-val" id="stat-subs">—</div><div class="stat-lbl">Abone</div></div>
+      <div class="stat-item"><div class="stat-val" id="stat-views">—</div><div class="stat-lbl">Toplam İzlenme</div></div>
+      <div class="stat-item"><div class="stat-val" id="stat-vids">—</div><div class="stat-lbl">Video</div></div>
+      <div class="stats-bar-cta">
+        <a href="https://www.youtube.com/@P4Otopark" target="_blank" class="btn-primary" style="font-size:13px;padding:.6rem 1.2rem">▶ Abone Ol</a>
       </div>
     </div>
   </section>
 
+  <!-- Featured -->
   <section>
-    <div class="section-header">
-      <div><div class="section-label">Öne Çıkan</div><h2 class="section-title">Son Video</h2></div>
+    <div class="sec-header">
+      <div><div class="sec-eyebrow">Öne Çıkan</div><h2 class="sec-title">Son Video</h2></div>
     </div>
-    <div id="featured-wrap" class="featured-wrap">
-      <div class="skeleton skel-thumb"></div>
+    <div id="featured-wrap" class="featured-layout">
+      <div class="sk sk-thumb"></div>
       <div style="display:flex;flex-direction:column;gap:1rem">
-        <div class="skeleton skel-line w40"></div>
-        <div class="skeleton skel-line w90" style="height:32px"></div>
-        <div class="skeleton skel-line w60"></div>
+        <div class="sk sk-line w40"></div>
+        <div class="sk sk-line w90" style="height:36px"></div>
+        <div class="sk sk-line w60"></div>
+        <div class="sk sk-line w40" style="height:28px"></div>
       </div>
     </div>
   </section>
 
   <div class="divider"></div>
 
+  <!-- Latest Videos -->
   <section>
-    <div class="section-header">
-      <div><div class="section-label">Son Yüklenenler</div><h2 class="section-title">Son Videolar</h2></div>
-      <button class="section-link" onclick="showPage('videos')">Tümünü Gör</button>
+    <div class="sec-header">
+      <div><div class="sec-eyebrow">Son Yüklenenler</div><h2 class="sec-title">Son Videolar</h2></div>
+      <button class="sec-link" onclick="goPage('videos')">Tümünü Gör</button>
     </div>
     <div class="video-grid" id="home-grid">
-      <div class="video-card" style="cursor:default"><div class="skeleton skel-thumb"></div><div class="card-body"><div class="skeleton skel-line w90"></div><div class="skeleton skel-line w60"></div></div></div>
-      <div class="video-card" style="cursor:default"><div class="skeleton skel-thumb"></div><div class="card-body"><div class="skeleton skel-line w90"></div><div class="skeleton skel-line w60"></div></div></div>
-      <div class="video-card" style="cursor:default"><div class="skeleton skel-thumb"></div><div class="card-body"><div class="skeleton skel-line w90"></div><div class="skeleton skel-line w60"></div></div></div>
-      <div class="video-card" style="cursor:default"><div class="skeleton skel-thumb"></div><div class="card-body"><div class="skeleton skel-line w90"></div><div class="skeleton skel-line w60"></div></div></div>
-      <div class="video-card" style="cursor:default"><div class="skeleton skel-thumb"></div><div class="card-body"><div class="skeleton skel-line w90"></div><div class="skeleton skel-line w60"></div></div></div>
-      <div class="video-card" style="cursor:default"><div class="skeleton skel-thumb"></div><div class="card-body"><div class="skeleton skel-line w90"></div><div class="skeleton skel-line w60"></div></div></div>
+      <div class="vcard" style="cursor:default"><div class="sk sk-thumb"></div><div class="vcard-body"><div class="sk sk-line w90"></div><div class="sk sk-line w60"></div></div></div>
+      <div class="vcard" style="cursor:default"><div class="sk sk-thumb"></div><div class="vcard-body"><div class="sk sk-line w90"></div><div class="sk sk-line w60"></div></div></div>
+      <div class="vcard" style="cursor:default"><div class="sk sk-thumb"></div><div class="vcard-body"><div class="sk sk-line w90"></div><div class="sk sk-line w60"></div></div></div>
+      <div class="vcard" style="cursor:default"><div class="sk sk-thumb"></div><div class="vcard-body"><div class="sk sk-line w90"></div><div class="sk sk-line w60"></div></div></div>
+      <div class="vcard" style="cursor:default"><div class="sk sk-thumb"></div><div class="vcard-body"><div class="sk sk-line w90"></div><div class="sk sk-line w60"></div></div></div>
+      <div class="vcard" style="cursor:default"><div class="sk sk-thumb"></div><div class="vcard-body"><div class="sk sk-line w90"></div><div class="sk sk-line w60"></div></div></div>
     </div>
   </section>
 
-  <section class="social-section">
-    <div class="section-header"><div><div class="section-label">Topluluk</div><h2 class="section-title">Bizi Takip Et</h2></div></div>
+  <!-- Social -->
+  <section class="social-band">
+    <div class="sec-header"><div><div class="sec-eyebrow">Topluluk</div><h2 class="sec-title">Bizi Takip Et</h2></div></div>
     <div class="social-grid">
-      <a href="https://www.youtube.com/@P4Otopark" target="_blank" class="social-card yt"><div class="social-icon">▶️</div><div><div class="social-info-platform">YouTube</div><div class="social-info-handle">P4 Otopark</div><div class="social-info-count" id="yt-count"></div></div></a>
-      <a href="https://www.instagram.com/p4otopark" target="_blank" class="social-card ig"><div class="social-icon">📷</div><div><div class="social-info-platform">Instagram</div><div class="social-info-handle">@p4otopark</div></div></a>
-      <a href="https://x.com/P4otopark" target="_blank" class="social-card tw"><div class="social-icon">🐦</div><div><div class="social-info-platform">Twitter / X</div><div class="social-info-handle">@P4otopark</div></div></a>
-      <a href="https://linktr.ee/p4otopark" target="_blank" class="social-card tk"><div class="social-icon">🔗</div><div><div class="social-info-platform">Linktree</div><div class="social-info-handle">p4otopark</div></div></a>
+      <a href="https://www.youtube.com/@P4Otopark" target="_blank" class="soc-card yt">
+        <div class="soc-icon">▶️</div>
+        <div><div class="soc-platform">YouTube</div><div class="soc-handle">P4 Otopark</div><div class="soc-count" id="yt-count"></div></div>
+      </a>
+      <a href="https://www.instagram.com/p4otopark" target="_blank" class="soc-card ig">
+        <div class="soc-icon">📷</div>
+        <div><div class="soc-platform">Instagram</div><div class="soc-handle">@p4otopark</div></div>
+      </a>
+      <a href="https://x.com/P4otopark" target="_blank" class="soc-card tw">
+        <div class="soc-icon">🐦</div>
+        <div><div class="soc-platform">Twitter / X</div><div class="soc-handle">@P4otopark</div></div>
+      </a>
+      <a href="https://linktr.ee/p4otopark" target="_blank" class="soc-card lt">
+        <div class="soc-icon">🔗</div>
+        <div><div class="soc-platform">Linktree</div><div class="soc-handle">p4otopark</div></div>
+      </a>
     </div>
   </section>
 
-  <div class="cta-strip">
+  <div class="cta-band">
     <div class="cta-eyebrow">Aramıza Katıl</div>
     <h2 class="cta-title">GERÇEK GS TARAFTARI<br>BURADA!</h2>
-    <p class="cta-sub">Maç analizleri, transfer haberleri ve canlı yayınlar için abone ol.</p>
-    <div class="cta-actions">
+    <p class="cta-sub">Maç analizleri, transfer haberleri ve canlı yayınlar için abone ol. P4 Otopark ailesi seni bekliyor.</p>
+    <div class="cta-btns">
       <a href="https://www.youtube.com/@P4Otopark" target="_blank" class="btn-primary">▶ YouTube'da Abone Ol</a>
-      <button class="btn-outline" onclick="showPage('live')">Canlı Yayına Git →</button>
+      <button class="btn-ghost" onclick="goPage('live')">Canlı Yayına Git →</button>
     </div>
   </div>
 </div>
 
-<!-- VIDEOS -->
+<!-- ═══════════ VIDEOS ═══════════ -->
 <div id="page-videos" class="page">
   <section>
-    <div class="section-header"><div><div class="section-label">Arşiv</div><h2 class="section-title">Tüm Videolar</h2></div></div>
+    <div class="sec-header"><div><div class="sec-eyebrow">Arşiv</div><h2 class="sec-title">Tüm Videolar</h2></div></div>
+    <div id="videos-err" class="err-banner" style="display:none">⚠ Videolar yüklenirken hata oluştu.</div>
     <div class="video-grid" id="all-grid">
-      <div class="video-card" style="cursor:default"><div class="skeleton skel-thumb"></div><div class="card-body"><div class="skeleton skel-line w90"></div><div class="skeleton skel-line w60"></div></div></div>
-      <div class="video-card" style="cursor:default"><div class="skeleton skel-thumb"></div><div class="card-body"><div class="skeleton skel-line w90"></div><div class="skeleton skel-line w60"></div></div></div>
-      <div class="video-card" style="cursor:default"><div class="skeleton skel-thumb"></div><div class="card-body"><div class="skeleton skel-line w90"></div><div class="skeleton skel-line w60"></div></div></div>
+      <div class="vcard" style="cursor:default"><div class="sk sk-thumb"></div><div class="vcard-body"><div class="sk sk-line w90"></div><div class="sk sk-line w60"></div></div></div>
+      <div class="vcard" style="cursor:default"><div class="sk sk-thumb"></div><div class="vcard-body"><div class="sk sk-line w90"></div><div class="sk sk-line w60"></div></div></div>
+      <div class="vcard" style="cursor:default"><div class="sk sk-thumb"></div><div class="vcard-body"><div class="sk sk-line w90"></div><div class="sk sk-line w60"></div></div></div>
     </div>
-    <div style="text-align:center;margin-top:2.5rem">
-      <button id="load-more-btn" class="btn-outline" onclick="loadMore()" style="display:none">Daha Fazla Yükle</button>
+    <div style="text-align:center">
+      <button id="load-more-btn" class="btn-ghost" onclick="loadMore()">Daha Fazla Yükle</button>
     </div>
   </section>
 </div>
 
-<!-- LIVE -->
+<!-- ═══════════ LIVE ═══════════ -->
 <div id="page-live" class="page">
   <section>
-    <div class="section-header">
-      <div><div class="section-label">Yayın Merkezi</div><h2 class="section-title">Canlı Yayın</h2></div>
+    <div class="sec-header">
+      <div><div class="sec-eyebrow">Yayın Merkezi</div><h2 class="sec-title">Canlı Yayın</h2></div>
       <div id="live-page-badge" style="display:none"><div class="live-badge"><div class="live-dot"></div>YAYIN AKTİF</div></div>
     </div>
-    <div id="live-player-wrap" class="live-embed-outer" style="display:none">
+    <div id="live-player" class="live-embed-outer" style="display:none">
       <iframe id="live-iframe" allow="autoplay;encrypted-media" allowfullscreen></iframe>
     </div>
-    <div id="no-live-wrap" class="no-live-msg">
+    <div id="no-live" class="no-live-card">
       <div class="icon">📺</div>
       <h3>Şu An Canlı Yayın Yok</h3>
-      <p>Bildirimlerini aç, bir sonraki yayını kaçırma!</p>
+      <p>Bildirimlerini aç, bir sonraki yayını kaçırma!<br>Son yayınlar aşağıda listeleniyor.</p>
       <a href="https://www.youtube.com/@P4Otopark" target="_blank" class="btn-primary" style="display:inline-flex;margin-top:1.5rem">YouTube Kanalına Git</a>
     </div>
-    <div>
-      <div class="section-label" style="margin-bottom:1.5rem;padding:0 0">Son Canlı Yayınlar</div>
-      <div class="video-grid" id="live-grid">
-        <div class="video-card" style="cursor:default"><div class="skeleton skel-thumb"></div><div class="card-body"><div class="skeleton skel-line w90"></div></div></div>
-        <div class="video-card" style="cursor:default"><div class="skeleton skel-thumb"></div><div class="card-body"><div class="skeleton skel-line w90"></div></div></div>
-        <div class="video-card" style="cursor:default"><div class="skeleton skel-thumb"></div><div class="card-body"><div class="skeleton skel-line w90"></div></div></div>
-      </div>
-    </div>
+    <div><div class="sec-eyebrow" style="margin-bottom:1.5rem">Son Canlı Yayınlar</div>
+    <div class="video-grid" id="live-grid">
+      <div class="vcard" style="cursor:default"><div class="sk sk-thumb"></div><div class="vcard-body"><div class="sk sk-line w90"></div></div></div>
+      <div class="vcard" style="cursor:default"><div class="sk sk-thumb"></div><div class="vcard-body"><div class="sk sk-line w90"></div></div></div>
+      <div class="vcard" style="cursor:default"><div class="sk sk-thumb"></div><div class="vcard-body"><div class="sk sk-line w90"></div></div></div>
+    </div></div>
   </section>
 </div>
 
-<!-- ABOUT -->
+<!-- ═══════════ ABOUT ═══════════ -->
 <div id="page-about" class="page">
   <div class="about-hero">
-    <div class="about-emblem">P4</div>
+    <div class="about-hex">P4</div>
     <h1>P4 OTOPARK</h1>
-    <p>Galatasaray odaklı, taraftar ruhlu, bağımsız dijital medya platformu.<br><br>Maç analizleri, transfer gündemi, canlı yayınlar ve dürüst yorumlarla Galatasaray'ı konuşuyoruz. <strong style="color:var(--yellow)">Cace, Maraz ve ekip</strong> tarafından kurulan bu kanal; Ali Sami Yen Arena'nın P4 katından, tribünden gelip tribün için konuşuyor.</p>
+    <p>Galatasaray odaklı, taraftar ruhlu, bağımsız dijital medya platformu.<br><br>
+    Maç analizleri, transfer gündemi, canlı yayınlar ve dürüst yorumlarla Galatasaray'ı konuşuyoruz.<br><br>
+    <strong style="color:var(--yellow)">Cace, Maraz ve ekip</strong> tarafından kurulan bu kanal; Ali Sami Yen Arena'nın P4 katından, tribünden gelip tribün için konuşuyor.</p>
   </div>
-  <div class="value-grid">
-    <div class="value-card"><div class="value-icon">🔥</div><div class="value-title">Taraftar Ruhu</div><div class="value-text">Kurumsal değil, gerçek fan bakış açısıyla. Duygusal, dürüst ve tutkuluyuz. Tribünden geliyoruz.</div></div>
-    <div class="value-card"><div class="value-icon">📊</div><div class="value-title">Analitik Bakış</div><div class="value-text">Sadece tepki değil, veri ve taktik analiz. Futbolu derinlemesine anlayarak konuşuyoruz.</div></div>
-    <div class="value-card"><div class="value-icon">📺</div><div class="value-title">Canlı Bağlantı</div><div class="value-text">Maç sonrası anında canlı yayın. Topluluğunuzla birlikte, gerçek zamanlı ve interaktif.</div></div>
-    <div class="value-card"><div class="value-icon">🏆</div><div class="value-title">Sadece Galatasaray</div><div class="value-text">Her içerik, her yorum, her analiz tek bir kulüp için. Bağımsız ve özgür sesiz.</div></div>
+  <div class="values-grid">
+    <div class="val-card"><div class="val-icon">🔥</div><div class="val-title">Taraftar Ruhu</div><div class="val-text">Kurumsal değil, gerçek fan bakış açısıyla. Duygusal, dürüst ve tutkuluyuz. Tribünden geliyoruz.</div></div>
+    <div class="val-card"><div class="val-icon">📊</div><div class="val-title">Analitik Bakış</div><div class="val-text">Sadece tepki değil, veri ve taktik analiz. Futbolu derinlemesine anlayarak konuşuyoruz.</div></div>
+    <div class="val-card"><div class="val-icon">📺</div><div class="val-title">Canlı Bağlantı</div><div class="val-text">Maç sonrası anında canlı yayın. Topluluğunuzla birlikte, gerçek zamanlı ve interaktif.</div></div>
+    <div class="val-card"><div class="val-icon">🏆</div><div class="val-title">Sadece Galatasaray</div><div class="val-text">Her içerik, her yorum, her analiz tek bir kulüp için. Bağımsız ve özgür sesiz.</div></div>
   </div>
-  <div class="cta-strip">
+  <div class="cta-band">
     <div class="cta-eyebrow">Kanalımız</div>
     <h2 class="cta-title">TOPLULUĞA KATIL</h2>
     <p class="cta-sub">YouTube kanalımıza abone ol, sosyal medyadan takip et.</p>
-    <div class="cta-actions">
+    <div class="cta-btns">
       <a href="https://www.youtube.com/@P4Otopark" target="_blank" class="btn-primary">▶ YouTube'a Git</a>
-      <button class="btn-outline" onclick="showPage('contact')">Bize Ulaş →</button>
+      <button class="btn-ghost" onclick="goPage('contact')">Bize Ulaş →</button>
     </div>
   </div>
 </div>
 
-<!-- CONTACT -->
+<!-- ═══════════ CONTACT ═══════════ -->
 <div id="page-contact" class="page">
   <div class="contact-wrap">
     <div style="margin-bottom:2.5rem">
-      <div class="section-label" style="margin-bottom:.5rem">İletişim</div>
-      <h2 class="section-title" style="font-size:clamp(2rem,5vw,3rem)">Bize Ulaşın</h2>
-      <p style="color:var(--muted);font-size:.9rem;margin-top:.75rem;line-height:1.7">İş birliği ve sponsorluk için sosyal medya kanallarımızdan DM atabilirsiniz.</p>
+      <div class="sec-eyebrow" style="margin-bottom:.5rem">İletişim</div>
+      <h2 class="sec-title" style="font-size:clamp(2rem,5vw,3rem)">Bize Ulaşın</h2>
+      <p style="color:var(--muted);font-size:.9rem;margin-top:.75rem;line-height:1.75">İş birliği ve sponsorluk için sosyal medya kanallarımızdan DM atabilirsiniz.</p>
     </div>
-    <a href="https://www.youtube.com/@P4Otopark" target="_blank" class="contact-card"><div class="contact-icon">▶️</div><div><div class="contact-label">YouTube</div><div class="contact-val">@P4Otopark</div><div class="contact-note">Abone ol, bildirimlerini aç</div></div></a>
-    <a href="https://www.instagram.com/p4otopark" target="_blank" class="contact-card"><div class="contact-icon">📷</div><div><div class="contact-label">Instagram</div><div class="contact-val">@p4otopark</div><div class="contact-note">4.6K takipçi • DM açık</div></div></a>
-    <a href="https://x.com/P4otopark" target="_blank" class="contact-card"><div class="contact-icon">🐦</div><div><div class="contact-label">Twitter / X</div><div class="contact-val">@P4otopark</div><div class="contact-note">Anlık gündem ve paylaşımlar</div></div></a>
-    <a href="https://linktr.ee/p4otopark" target="_blank" class="contact-card"><div class="contact-icon">🔗</div><div><div class="contact-label">Linktree</div><div class="contact-val">linktr.ee/p4otopark</div><div class="contact-note">Tüm bağlantılar tek yerde</div></div></a>
-    <div style="padding:1.5rem;background:var(--card);border:1px solid var(--border);border-radius:12px">
-      <div class="section-label" style="margin-bottom:.75rem">İş Birliği</div>
-      <p style="font-size:.88rem;color:var(--muted);line-height:1.7">Reklam, sponsorluk ve marka iş birlikleri için Instagram ya da Twitter'dan DM atabilirsiniz.</p>
+    <a href="https://www.youtube.com/@P4Otopark" target="_blank" class="con-card">
+      <div class="con-icon">▶️</div><div><div class="con-platform">YouTube</div><div class="con-val">@P4Otopark</div><div class="con-note">Abone ol, bildirimlerini aç</div></div>
+    </a>
+    <a href="https://www.instagram.com/p4otopark" target="_blank" class="con-card">
+      <div class="con-icon">📷</div><div><div class="con-platform">Instagram</div><div class="con-val">@p4otopark</div><div class="con-note">4.6K takipçi • DM açık</div></div>
+    </a>
+    <a href="https://x.com/P4otopark" target="_blank" class="con-card">
+      <div class="con-icon">🐦</div><div><div class="con-platform">Twitter / X</div><div class="con-val">@P4otopark</div><div class="con-note">Anlık gündem ve maç paylaşımları</div></div>
+    </a>
+    <a href="https://linktr.ee/p4otopark" target="_blank" class="con-card">
+      <div class="con-icon">🔗</div><div><div class="con-platform">Linktree</div><div class="con-val">linktr.ee/p4otopark</div><div class="con-note">Tüm bağlantılar tek yerde</div></div>
+    </a>
+    <div style="padding:1.5rem;background:var(--card);border:1px solid var(--border);border-radius:12px;margin-top:1.5rem">
+      <div class="sec-eyebrow" style="margin-bottom:.75rem">İş Birliği</div>
+      <p style="font-size:.88rem;color:var(--muted);line-height:1.75">Reklam, sponsorluk ve marka iş birlikleri için Instagram ya da Twitter'dan DM atabilirsiniz.</p>
     </div>
   </div>
 </div>
 
 <!-- FOOTER -->
-<footer id="main-footer" style="display:none">
-  <div class="footer-top">
+<footer>
+  <div class="footer-grid">
     <div class="footer-brand">
-      <div class="nav-logo" onclick="showPage('home')" style="display:inline-flex">
-        <div class="logo-emblem">P4</div>
-        <div class="logo-text">P4 <span>OTOPARK</span></div>
+      <div class="nav-logo" onclick="goPage('home')" style="display:inline-flex">
+        <div class="logo-hex">P4</div>
+        <div class="logo-wordmark">P4 <span>OTOPARK</span></div>
       </div>
       <p>Galatasaray odaklı taraftar medya platformu. Maç analizleri, transfer gündemi ve canlı yayınlar.</p>
     </div>
     <div class="footer-col"><h4>Sayfalar</h4><ul>
-      <li><a onclick="showPage('home')">Ana Sayfa</a></li>
-      <li><a onclick="showPage('videos')">Videolar</a></li>
-      <li><a onclick="showPage('live')">Canlı Yayın</a></li>
-      <li><a onclick="showPage('about')">Hakkında</a></li>
+      <li><a onclick="goPage('home')">Ana Sayfa</a></li>
+      <li><a onclick="goPage('videos')">Videolar</a></li>
+      <li><a onclick="goPage('live')">Canlı Yayın</a></li>
+      <li><a onclick="goPage('about')">Hakkında</a></li>
     </ul></div>
     <div class="footer-col"><h4>Sosyal Medya</h4><ul>
       <li><a href="https://www.youtube.com/@P4Otopark" target="_blank">YouTube</a></li>
@@ -496,87 +559,103 @@ footer{background:var(--dark);border-top:1px solid var(--border);padding:clamp(2
     </ul></div>
     <div class="footer-col"><h4>Kanal</h4><ul>
       <li><a href="https://www.youtube.com/@P4Otopark" target="_blank">Abone Ol</a></li>
-      <li><a onclick="showPage('contact')">İletişim</a></li>
+      <li><a onclick="goPage('contact')">İletişim</a></li>
     </ul></div>
   </div>
   <div class="footer-bottom">
     <div class="footer-copy">© 2026 P4 Otopark. Yapıldı <span>❤️</span> ile.</div>
-    <div class="footer-gs-badge">Galatasaray Fan Media</div>
+    <div style="display:flex;align-items:center;gap:1.5rem">
+      <span id="cache-info" style="font-size:.75rem;color:var(--dimmed)"></span>
+      <div class="footer-badge">Galatasaray Fan Media</div>
+    </div>
   </div>
 </footer>
 
 <script>
-// ── STATE ──
-let API_KEY = '';
+// ─── CONFIG ───
+const YT_API_KEY = 'AIzaSyAQtXoGfxf1WVhUBHt-FfHqnYcMU_2tO2I';
+const CACHE_TTL_MS = 6 * 60 * 60 * 1000; // 6 saat
+const CACHE_KEY    = 'p4_yt_cache_v2';
+
+// ─── STATE ───
 let channelId = '';
 let uploadsId = '';
 let allVideos = [];
 let nextToken = null;
-let isDemo = false;
 
-// ── BOOT ──
-window.addEventListener('DOMContentLoaded', () => {
-  const k = localStorage.getItem('p4_api_key');
-  const c = localStorage.getItem('p4_channel_id');
-  const u = localStorage.getItem('p4_uploads_id');
-  if (k && c && u) {
-    API_KEY = k; channelId = c; uploadsId = u;
-    document.getElementById('setup-screen').style.display = 'none';
-    document.getElementById('loading-overlay').style.display = 'flex';
-    Promise.all([fetchChannelStats(), fetchVideos(), checkLive()])
-      .then(showApp)
-      .catch(() => {
-        localStorage.clear();
-        document.getElementById('loading-overlay').style.display = 'none';
-        document.getElementById('setup-screen').style.display = 'flex';
-        document.getElementById('setup-error').style.display = 'block';
-        document.getElementById('setup-error').textContent = '⚠ Kayıtlı key geçersiz. Lütfen tekrar gir.';
-        API_KEY = '';
-      });
+// ─── CACHE HELPERS ───
+function cacheSet(data) {
+  try {
+    localStorage.setItem(CACHE_KEY, JSON.stringify({ ts: Date.now(), data }));
+  } catch(e) { /* localStorage dolu olabilir, önemli değil */ }
+}
+
+function cacheGet() {
+  try {
+    const raw = localStorage.getItem(CACHE_KEY);
+    if (!raw) return null;
+    const { ts, data } = JSON.parse(raw);
+    if (Date.now() - ts > CACHE_TTL_MS) { localStorage.removeItem(CACHE_KEY); return null; }
+    return data;
+  } catch(e) { return null; }
+}
+
+// ─── PROGRESS HELPERS ───
+function setProgress(pct, label) {
+  document.getElementById('loading-bar').style.width = pct + '%';
+  document.getElementById('loading-label').textContent = label;
+}
+
+function hideLoadingScreen() {
+  const s = document.getElementById('loading-screen');
+  s.classList.add('fade-out');
+  setTimeout(() => s.style.display = 'none', 450);
+}
+
+// ─── BOOT ───
+window.addEventListener('DOMContentLoaded', async () => {
+  // Cache'den yükle — varsa direkt göster, API çağrısı yok
+  const cached = cacheGet();
+  if (cached) {
+    setProgress(80, 'Cache\'den yükleniyor...');
+    channelId = cached.channelId;
+    uploadsId = cached.uploadsId;
+    nextToken = cached.nextToken;
+    applyChannelStats(cached.stats);
+    renderInitial(cached.videos);
+    if (cached.live) applyLive(cached.live);
+    setProgress(100, 'Hazır!');
+    setTimeout(hideLoadingScreen, 200);
+    return;
+  }
+
+  // Cache yok — API'dan çek ve kaydet
+  try {
+    setProgress(10, 'Kanal aranıyor...');
+    await resolveChannel();
+
+    setProgress(35, 'Kanal bilgileri çekiliyor...');
+    const stats = await fetchChannelStats();
+
+    setProgress(60, 'Videolar yükleniyor...');
+    await fetchVideos();
+
+    setProgress(88, 'Canlı yayın kontrol ediliyor...');
+    const live = await checkLive();
+
+    // Cache'e yaz
+    cacheSet({ channelId, uploadsId, nextToken, stats, videos: allVideos, live: live || null });
+
+    setProgress(100, 'Hazır!');
+    setTimeout(hideLoadingScreen, 300);
+  } catch (e) {
+    console.error('YouTube API hatası:', e);
+    setProgress(100, 'Bağlantı hatası');
+    setTimeout(hideLoadingScreen, 1000);
   }
 });
 
-// ── CONNECT ──
-async function connectAPI() {
-  const k = document.getElementById('api-key-input').value.trim();
-  if (!k) { alert('API key boş olamaz!'); return; }
-  API_KEY = k;
-  document.getElementById('setup-error').style.display = 'none';
-  document.getElementById('setup-screen').style.display = 'none';
-  document.getElementById('loading-overlay').style.display = 'flex';
-  try {
-    await resolveChannel();
-    await Promise.all([fetchChannelStats(), fetchVideos(), checkLive()]);
-    localStorage.setItem('p4_api_key', API_KEY);
-    localStorage.setItem('p4_channel_id', channelId);
-    localStorage.setItem('p4_uploads_id', uploadsId);
-    showApp();
-  } catch(e) {
-    console.error(e);
-    API_KEY = '';
-    document.getElementById('loading-overlay').style.display = 'none';
-    document.getElementById('setup-screen').style.display = 'flex';
-    document.getElementById('setup-error').style.display = 'block';
-    document.getElementById('setup-error').textContent = '⚠ Hata: ' + (e.message || 'API key geçersiz veya kota doldu.');
-  }
-}
-
-function skipSetup() {
-  isDemo = true;
-  document.getElementById('setup-screen').style.display = 'none';
-  document.getElementById('demo-banner').style.display = 'flex';
-  loadDemo();
-  showApp();
-}
-
-function showApp() {
-  document.getElementById('loading-overlay').style.display = 'none';
-  document.getElementById('main-nav').style.display = 'flex';
-  document.getElementById('main-footer').style.display = 'block';
-  document.getElementById('page-home').classList.add('active');
-}
-
-// ── YT API ──
+// ─── YT FETCH ───
 async function ytGet(url) {
   const r = await fetch(url);
   const d = await r.json();
@@ -584,181 +663,229 @@ async function ytGet(url) {
   return d;
 }
 
+// ─── CHANNEL ID RESOLUTION ───
 async function resolveChannel() {
-  // Try by handle first
-  const s = await ytGet(`https://www.googleapis.com/youtube/v3/search?part=snippet&type=channel&q=P4+Otopark+Galatasaray&maxResults=3&key=${API_KEY}`);
+  // First try: search by channel name
+  const s = await ytGet(
+    `https://www.googleapis.com/youtube/v3/search?part=snippet&type=channel&q=P4+Otopark+Galatasaray&maxResults=5&key=${YT_API_KEY}`
+  );
   if (!s.items?.length) throw new Error('Kanal bulunamadı');
-  // Pick the P4Otopark channel specifically
-  const ch = s.items.find(i => i.snippet.channelTitle.toLowerCase().includes('p4')) || s.items[0];
-  channelId = ch.snippet.channelId;
-  const d = await ytGet(`https://www.googleapis.com/youtube/v3/channels?part=contentDetails&id=${channelId}&key=${API_KEY}`);
-  uploadsId = d.items[0].contentDetails.relatedPlaylists.uploads;
+
+  // Pick best match
+  const match = s.items.find(i =>
+    i.snippet.channelTitle.toLowerCase().includes('p4 otopark') ||
+    i.snippet.channelTitle.toLowerCase().includes('p4otopark')
+  ) || s.items[0];
+
+  channelId = match.snippet.channelId;
+
+  // Get uploads playlist ID
+  const ch = await ytGet(
+    `https://www.googleapis.com/youtube/v3/channels?part=contentDetails&id=${channelId}&key=${YT_API_KEY}`
+  );
+  uploadsId = ch.items[0].contentDetails.relatedPlaylists.uploads;
 }
 
+// ─── CHANNEL STATS ───
 async function fetchChannelStats() {
-  const d = await ytGet(`https://www.googleapis.com/youtube/v3/channels?part=snippet,statistics&id=${channelId}&key=${API_KEY}`);
-  const it = d.items[0];
-  const s = it.statistics;
-  document.getElementById('ch-stats-bar').style.display = 'flex';
-  document.getElementById('ch-avatar').src = it.snippet.thumbnails?.medium?.url || '';
-  document.getElementById('stat-subs').textContent = fmt(s.subscriberCount);
-  document.getElementById('stat-views').textContent = fmt(s.viewCount);
-  document.getElementById('stat-vids').textContent = fmt(s.videoCount);
-  document.getElementById('yt-count').textContent = fmt(s.subscriberCount) + ' abone';
+  const d = await ytGet(
+    `https://www.googleapis.com/youtube/v3/channels?part=snippet,statistics&id=${channelId}&key=${YT_API_KEY}`
+  );
+  const ch = d.items[0];
+  const stats = {
+    avatar: ch.snippet.thumbnails?.medium?.url || '',
+    subs:   ch.statistics.subscriberCount,
+    views:  ch.statistics.viewCount,
+    vids:   ch.statistics.videoCount,
+  };
+  applyChannelStats(stats);
+  return stats;
 }
 
+function applyChannelStats(stats) {
+  document.getElementById('stats-bar').style.display = 'flex';
+  document.getElementById('ch-avatar').src           = stats.avatar;
+  document.getElementById('stat-subs').textContent   = fmt(stats.subs);
+  document.getElementById('stat-views').textContent  = fmt(stats.views);
+  document.getElementById('stat-vids').textContent   = fmt(stats.vids);
+  document.getElementById('yt-count').textContent    = fmt(stats.subs) + ' abone';
+}
+
+// ─── VIDEOS ───
 async function fetchVideos(token) {
-  let url = `https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&playlistId=${uploadsId}&maxResults=24&key=${API_KEY}`;
+  let url = `https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&playlistId=${uploadsId}&maxResults=24&key=${YT_API_KEY}`;
   if (token) url += '&pageToken=' + token;
+
   const pl = await ytGet(url);
   nextToken = pl.nextPageToken || null;
-  const ids = pl.items.map(i => i.snippet.resourceId.videoId).join(',');
-  const vd = await ytGet(`https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails,statistics,liveStreamingDetails&id=${ids}&key=${API_KEY}`);
+
+  const ids = pl.items.map(i => i.snippet.resourceId.videoId).filter(Boolean).join(',');
+  if (!ids) return;
+
+  const vd = await ytGet(
+    `https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails,statistics,liveStreamingDetails&id=${ids}&key=${YT_API_KEY}`
+  );
+
   const videos = vd.items.map(v => ({
-    id: v.id,
-    title: v.snippet.title,
-    desc: v.snippet.description?.slice(0, 200) || '',
-    thumb: v.snippet.thumbnails?.maxres?.url || v.snippet.thumbnails?.high?.url || v.snippet.thumbnails?.medium?.url || '',
-    published: v.snippet.publishedAt,
-    duration: parseDur(v.contentDetails?.duration),
-    views: v.statistics?.viewCount,
-    likes: v.statistics?.likeCount,
-    isLive: v.snippet.liveBroadcastContent === 'live',
-    liveViewers: v.liveStreamingDetails?.concurrentViewers
+    id:           v.id,
+    title:        v.snippet.title,
+    desc:         (v.snippet.description || '').slice(0, 240),
+    thumb:        v.snippet.thumbnails?.maxres?.url
+                  || v.snippet.thumbnails?.high?.url
+                  || v.snippet.thumbnails?.medium?.url
+                  || '',
+    published:    v.snippet.publishedAt,
+    duration:     parseDur(v.contentDetails?.duration),
+    views:        v.statistics?.viewCount,
+    likes:        v.statistics?.likeCount,
+    isLive:       v.snippet.liveBroadcastContent === 'live',
+    liveViewers:  v.liveStreamingDetails?.concurrentViewers,
   }));
+
   if (!token) {
     allVideos = videos;
-    renderAll(videos);
+    renderInitial(videos);
   } else {
     allVideos = [...allVideos, ...videos];
-    appendAll(videos);
+    appendToAllGrid(videos);
   }
-  document.getElementById('load-more-btn').style.display = nextToken ? 'inline-flex' : 'none';
+
+  document.getElementById('load-more-btn').style.display = nextToken ? 'block' : 'none';
 }
 
-async function checkLive() {
-  const d = await ytGet(`https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=${channelId}&eventType=live&type=video&maxResults=1&key=${API_KEY}`);
-  if (d.items?.length) {
-    const v = d.items[0];
-    const vid = v.id.videoId;
-    // Live alert
-    document.getElementById('live-alert-bar').style.display = 'flex';
-    document.getElementById('live-alert-title').textContent = trunc(v.snippet.title, 60);
-    document.getElementById('live-alert-link').href = `https://www.youtube.com/watch?v=${vid}`;
-    // Live page
-    document.getElementById('live-page-badge').style.display = 'block';
-    document.getElementById('no-live-wrap').style.display = 'none';
-    document.getElementById('live-player-wrap').style.display = 'block';
-    document.getElementById('live-iframe').src = `https://www.youtube.com/embed/${vid}?autoplay=0`;
-  }
-}
-
-// ── RENDER ──
-function renderAll(videos) {
-  if (!videos.length) return;
-  // Hero
-  const h = videos[0];
-  document.getElementById('hero-img').src = h.thumb;
-  document.getElementById('hero-title').innerHTML = trunc(h.title, 55).replace(/galatasaray/gi, '<em>Galatasaray</em>');
-  document.getElementById('hero-desc').textContent = trunc(h.desc, 160);
-  document.getElementById('hero-btn').href = `https://www.youtube.com/watch?v=${h.id}`;
-  // Featured
-  renderFeatured(h);
-  // Grids
-  document.getElementById('home-grid').innerHTML = '';
-  videos.slice(1, 7).forEach(v => document.getElementById('home-grid').appendChild(card(v)));
-  document.getElementById('all-grid').innerHTML = '';
-  videos.forEach(v => document.getElementById('all-grid').appendChild(card(v)));
-  // Live page grid
-  document.getElementById('live-grid').innerHTML = '';
-  videos.slice(0, 6).forEach(v => document.getElementById('live-grid').appendChild(card(v)));
-}
-
-function appendAll(videos) {
-  videos.forEach(v => document.getElementById('all-grid').appendChild(card(v)));
-}
-
-function renderFeatured(v) {
-  document.getElementById('featured-wrap').innerHTML = `
-    <a href="https://www.youtube.com/watch?v=${v.id}" target="_blank" class="featured-thumb">
-      <img src="${v.thumb}" alt="${esc(v.title)}" loading="lazy">
-      <div class="featured-play-wrap"><div class="featured-play"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div></div>
-    </a>
-    <div class="featured-info">
-      <div class="featured-tag">🔥 Son Video</div>
-      <h3 class="featured-title">${esc(trunc(v.title, 80))}</h3>
-      <p class="featured-desc">${esc(trunc(v.desc, 180))}</p>
-      <div class="featured-stats">
-        <div class="stat"><div class="stat-value">${fmt(v.views)}</div><div class="stat-label">İzlenme</div></div>
-        <div class="stat"><div class="stat-value">${fmt(v.likes)}</div><div class="stat-label">Beğeni</div></div>
-        <div class="stat"><div class="stat-value">${fmtDate(v.published)}</div><div class="stat-label">Tarih</div></div>
-      </div>
-      <a href="https://www.youtube.com/watch?v=${v.id}" target="_blank" class="btn-primary" style="align-self:flex-start;margin-top:.5rem">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>Şimdi İzle
-      </a>
-    </div>`;
-}
-
-function card(v) {
-  const a = document.createElement('a');
-  a.className = 'video-card';
-  a.href = `https://www.youtube.com/watch?v=${v.id}`;
-  a.target = '_blank';
-  a.innerHTML = `
-    <div class="thumb-wrap">
-      <img src="${v.thumb}" alt="${esc(v.title)}" loading="lazy" onerror="this.style.opacity='.3'">
-      <div class="thumb-overlay"><div class="play-btn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div></div>
-      ${v.isLive ? '' : `<div class="thumb-duration">${v.duration}</div>`}
-      ${v.isLive ? '<div class="thumb-live-badge"><div class="live-badge"><div class="live-dot"></div>CANLI</div></div>' : ''}
-    </div>
-    <div class="card-body">
-      <div class="card-meta">
-        <span class="card-cat">${cat(v.title)}</span>
-        <span class="card-views">${v.isLive ? (v.liveViewers ? fmt(v.liveViewers)+' izleyici' : 'Canlı') : fmt(v.views)+' görüntüleme'}</span>
-      </div>
-      <div class="card-title">${esc(trunc(v.title, 70))}</div>
-      <div class="card-date">${v.isLive ? 'Şu an yayında' : fmtDate(v.published)}</div>
-    </div>`;
-  return a;
-}
-
-// ── LOAD MORE ──
 async function loadMore() {
   if (!nextToken) return;
   const btn = document.getElementById('load-more-btn');
   btn.textContent = 'Yükleniyor...';
   btn.disabled = true;
-  await fetchVideos(nextToken);
+  try { await fetchVideos(nextToken); }
+  catch(e) { console.error(e); }
   btn.textContent = 'Daha Fazla Yükle';
   btn.disabled = false;
 }
 
-// ── DEMO ──
-function loadDemo() {
-  const dv = [
-    {id:'RH1_go6LZPU',title:'Galatasaray — Fenerbahçe Derbi Maç Sonu Değerlendirme | P4 Otopark',desc:'Derbinin tüm detaylarını masaya yatırıyoruz.',thumb:'https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=600&q=70',published:new Date().toISOString(),duration:'1:24:17',views:'89432',likes:'4200',isLive:false},
-    {id:'abc1',title:'TRANSFER SON DAKİKA! Galatasaray\'ın hedefi netleşiyor',desc:'Yaz transfer bombası.',thumb:'https://images.unsplash.com/photo-1431324155629-1a6deb1dec8d?w=600&q=70',published:new Date(Date.now()-86400000).toISOString(),duration:'18:33',views:'54123',likes:'2800',isLive:false},
-    {id:'abc2',title:'Şampiyonluk hesapları — GS ligi bitirebilir mi?',desc:'Puan durumu analizi.',thumb:'https://images.unsplash.com/photo-1553778263-73a83bab9b0c?w=600&q=70',published:new Date(Date.now()-172800000).toISOString(),duration:'32:50',views:'41000',likes:'1900',isLive:false},
-    {id:'abc3',title:'Canlı Yayın Tekrarı — Maçtan Sonra Disko 🔴',desc:'Canlı yayın.',thumb:'https://images.unsplash.com/photo-1577223625816-7546f13df25d?w=600&q=70',published:new Date(Date.now()-259200000).toISOString(),duration:'2:14:33',views:'28000',likes:'1400',isLive:false},
-    {id:'abc4',title:'Icardi bu sezon ne yaptı? İstatistik analizi',desc:'Sezon değerlendirmesi.',thumb:'https://images.unsplash.com/photo-1517927033932-b3d18e61fb3a?w=600&q=70',published:new Date(Date.now()-345600000).toISOString(),duration:'15:44',views:'28000',likes:'1200',isLive:false},
-    {id:'abc5',title:'Sezon özel — Galatasaray nasıl bu noktaya geldi?',desc:'Sezon analizi özel.',thumb:'https://images.unsplash.com/photo-1508098682722-e99c43a406b2?w=600&q=70',published:new Date(Date.now()-432000000).toISOString(),duration:'58:12',views:'67000',likes:'3100',isLive:false},
-  ];
-  allVideos = dv;
-  document.getElementById('ch-stats-bar').style.display = 'flex';
-  document.getElementById('stat-subs').textContent = '45K';
-  document.getElementById('stat-views').textContent = '8.2M';
-  document.getElementById('stat-vids').textContent = '312';
-  document.getElementById('yt-count').textContent = '45K abone';
-  document.getElementById('ch-avatar').src = 'https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=100&q=70';
-  renderAll(dv);
+// ─── LIVE STREAM CHECK ───
+async function checkLive() {
+  const d = await ytGet(
+    `https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=${channelId}&eventType=live&type=video&maxResults=1&key=${YT_API_KEY}`
+  );
+  if (!d.items?.length) return null;
+  const v   = d.items[0];
+  const live = { id: v.id.videoId, title: v.snippet.title };
+  applyLive(live);
+  return live;
 }
 
-// ── HELPERS ──
+function applyLive(live) {
+  if (!live) return;
+  const ttl = trunc(live.title, 65);
+  document.getElementById('live-bar').style.display  = 'flex';
+  document.getElementById('live-bar-title').textContent = ttl;
+  document.getElementById('live-bar-link').href      = `https://www.youtube.com/watch?v=${live.id}`;
+  document.getElementById('live-page-badge').style.display = 'block';
+  document.getElementById('no-live').style.display   = 'none';
+  const player = document.getElementById('live-player');
+  player.style.display = 'block';
+  document.getElementById('live-iframe').src = `https://www.youtube.com/embed/${live.id}?autoplay=0&rel=0`;
+}
+
+// ─── RENDER ───
+function renderInitial(videos) {
+  if (!videos.length) return;
+  const first = videos[0];
+
+  // Hero
+  document.getElementById('hero-thumb').src = first.thumb;
+  document.getElementById('hero-title').innerHTML = trunc(first.title, 55)
+    .replace(/galatasaray/gi, '<em>Galatasaray</em>');
+  document.getElementById('hero-desc').textContent = trunc(first.desc, 180);
+  document.getElementById('hero-watch-btn').href = ytLink(first.id);
+
+  // Featured
+  renderFeatured(first);
+
+  // Home grid (videos 1–6, skip index 0 which is hero)
+  const homeGrid = document.getElementById('home-grid');
+  homeGrid.innerHTML = '';
+  videos.slice(1, 7).forEach(v => homeGrid.appendChild(makeCard(v)));
+
+  // All videos grid
+  const allGrid = document.getElementById('all-grid');
+  allGrid.innerHTML = '';
+  videos.forEach(v => allGrid.appendChild(makeCard(v)));
+
+  // Live page recent grid
+  const liveGrid = document.getElementById('live-grid');
+  liveGrid.innerHTML = '';
+  videos.slice(0, 6).forEach(v => liveGrid.appendChild(makeCard(v)));
+}
+
+function appendToAllGrid(videos) {
+  const g = document.getElementById('all-grid');
+  videos.forEach(v => g.appendChild(makeCard(v)));
+}
+
+function renderFeatured(v) {
+  document.getElementById('featured-wrap').innerHTML = `
+    <a href="${ytLink(v.id)}" target="_blank" class="feat-thumb">
+      <img src="${v.thumb}" alt="${esc(v.title)}" loading="lazy">
+      <div class="feat-thumb-overlay">
+        <div class="feat-play">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+        </div>
+      </div>
+    </a>
+    <div class="feat-info">
+      <div class="feat-tag">🔥 Son Video</div>
+      <h3 class="feat-title">${esc(trunc(v.title, 80))}</h3>
+      <p class="feat-desc">${esc(trunc(v.desc, 200))}</p>
+      <div class="feat-stats">
+        <div class="feat-stat"><div class="feat-stat-val">${fmt(v.views)}</div><div class="feat-stat-lbl">İzlenme</div></div>
+        <div class="feat-stat"><div class="feat-stat-val">${fmt(v.likes)}</div><div class="feat-stat-lbl">Beğeni</div></div>
+        <div class="feat-stat"><div class="feat-stat-val">${fmtDate(v.published)}</div><div class="feat-stat-lbl">Tarih</div></div>
+      </div>
+      <a href="${ytLink(v.id)}" target="_blank" class="btn-primary" style="align-self:flex-start;margin-top:.5rem">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>Şimdi İzle
+      </a>
+    </div>`;
+}
+
+function makeCard(v) {
+  const a = document.createElement('a');
+  a.className = 'vcard';
+  a.href      = ytLink(v.id);
+  a.target    = '_blank';
+  a.innerHTML = `
+    <div class="vcard-thumb">
+      <img src="${v.thumb}" alt="${esc(v.title)}" loading="lazy" onerror="this.style.opacity='.2'">
+      <div class="vcard-overlay">
+        <div class="play-circle"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div>
+      </div>
+      ${v.isLive
+        ? '<div class="vcard-live-tag"><div class="live-badge"><div class="live-dot"></div>CANLI</div></div>'
+        : `<div class="vcard-dur">${v.duration}</div>`}
+    </div>
+    <div class="vcard-body">
+      <div class="vcard-meta">
+        <span class="vcard-cat">${guessCategory(v.title)}</span>
+        <span class="vcard-views">${v.isLive
+          ? (v.liveViewers ? fmt(v.liveViewers) + ' izleyici' : 'Canlı')
+          : fmt(v.views) + ' görüntüleme'}</span>
+      </div>
+      <div class="vcard-title">${esc(trunc(v.title, 72))}</div>
+      <div class="vcard-date">${v.isLive ? 'Şu an yayında' : fmtDate(v.published)}</div>
+    </div>`;
+  return a;
+}
+
+// ─── HELPERS ───
+function ytLink(id) { return `https://www.youtube.com/watch?v=${id}`; }
+
 function fmt(n) {
   if (!n) return '—';
   n = parseInt(n);
-  if (n >= 1000000) return (n/1000000).toFixed(1)+'M';
-  if (n >= 1000) return (n/1000).toFixed(1)+'K';
+  if (n >= 1_000_000) return (n / 1_000_000).toFixed(1) + 'M';
+  if (n >= 1_000)     return (n / 1_000).toFixed(1) + 'K';
   return n.toString();
 }
 
@@ -766,45 +893,65 @@ function parseDur(iso) {
   if (!iso || iso === 'P0D') return '';
   const m = iso.match(/PT(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?/);
   if (!m) return '';
-  const h=parseInt(m[1]||0),mn=parseInt(m[2]||0),s=parseInt(m[3]||0);
-  return h>0 ? `${h}:${String(mn).padStart(2,'0')}:${String(s).padStart(2,'0')}` : `${mn}:${String(s).padStart(2,'0')}`;
+  const h = +( m[1] || 0), mn = +(m[2] || 0), s = +(m[3] || 0);
+  return h > 0
+    ? `${h}:${String(mn).padStart(2,'0')}:${String(s).padStart(2,'0')}`
+    : `${mn}:${String(s).padStart(2,'0')}`;
 }
 
 function fmtDate(iso) {
   if (!iso) return '';
-  return new Date(iso).toLocaleDateString('tr-TR',{day:'numeric',month:'long',year:'numeric'});
+  return new Date(iso).toLocaleDateString('tr-TR', { day: 'numeric', month: 'long', year: 'numeric' });
 }
 
-function trunc(s, n) { return s && s.length > n ? s.slice(0,n)+'…' : (s||''); }
+function trunc(s, n) { return s && s.length > n ? s.slice(0, n) + '…' : (s || ''); }
 
 function esc(s) {
-  if (!s) return '';
-  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  return (s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
 
-function cat(title) {
-  const t = (title||'').toLowerCase();
-  if (t.match(/transfer|bonservis|imza|dönemi/)) return 'Transfer';
-  if (t.match(/canlı|live|disko|yayın/)) return 'Canlı Yayın';
-  if (t.match(/maç|derbi|gol|sonu|kaybettik|yendik/)) return 'Maç Sonu';
-  if (t.match(/son dakika|gündem|haber/)) return 'Gündem';
-  if (t.match(/analiz|taktik|değerlendirme/)) return 'Analiz';
+function guessCategory(t) {
+  t = (t || '').toLowerCase();
+  if (/transfer|bonservis|imza|dönemi|bomba/.test(t)) return 'Transfer';
+  if (/canlı|live|disko|yayın/.test(t))               return 'Canlı Yayın';
+  if (/maç|derbi|gol|sonu|kaybettik|yendik/.test(t))  return 'Maç Sonu';
+  if (/son dakika|gündem|haber/.test(t))               return 'Gündem';
+  if (/analiz|taktik|değerlendirme/.test(t))           return 'Analiz';
   return 'İçerik';
 }
 
-// ── NAV ──
-function showPage(id) {
-  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-  document.getElementById('page-'+id).classList.add('active');
-  document.querySelectorAll('.nav-links button').forEach(b=>b.classList.remove('active'));
-  const b = document.getElementById('nav-'+id);
+// ─── NAV ───
+function goPage(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-' + id).classList.add('active');
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  const b = document.getElementById('nav-' + id);
   if (b) b.classList.add('active');
-  window.scrollTo({top:0,behavior:'smooth'});
+  window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-function toggleMobileNav() {
-  document.getElementById('mobileNav').classList.toggle('open');
+function toggleMob() {
+  document.getElementById('mob-nav').classList.toggle('open');
 }
+
+// ─── CACHE INFO ───
+function updateCacheInfo() {
+  try {
+    const raw = localStorage.getItem(CACHE_KEY);
+    if (!raw) return;
+    const { ts } = JSON.parse(raw);
+    const agoMin = Math.round((Date.now() - ts) / 60000);
+    const expMin = Math.round((CACHE_TTL_MS - (Date.now() - ts)) / 60000);
+    const el = document.getElementById('cache-info');
+    if (el) {
+      el.textContent = `Son güncelleme: ${agoMin < 1 ? 'az önce' : agoMin + ' dk önce'} • ${expMin} dk sonra yenilenir`;
+      el.style.cursor = 'pointer';
+      el.title = 'Şimdi yenile';
+      el.onclick = () => { localStorage.removeItem(CACHE_KEY); location.reload(); };
+    }
+  } catch(e) {}
+}
+setTimeout(updateCacheInfo, 600);
 </script>
 </body>
 </html>
