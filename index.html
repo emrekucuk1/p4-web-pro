@@ -3,7 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>P4 Otopark — Galatasaray Fan Medya Platformu</title>
+<title>P4 Otopark — Galatasaray Fan Medya</title>
+<meta name="description" content="Galatasaray odaklı video, canlı yayın ve gündem içerikleri. P4 Otopark fan medya platformu.">
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@400;600;700;800&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -15,521 +16,436 @@
 html{scroll-behavior:smooth}
 body{font-family:'Manrope',sans-serif;background:var(--black);color:var(--text);overflow-x:hidden}
 body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");pointer-events:none;z-index:9999;opacity:.5}
-::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:var(--black)}::-webkit-scrollbar-thumb{background:var(--red);border-radius:2px}
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-track{background:var(--black)}
+::-webkit-scrollbar-thumb{background:var(--red);border-radius:2px}
 
-/* LOADING SCREEN */
+/* ── LOADING ── */
 #loading-screen{
   position:fixed;inset:0;background:var(--black);z-index:9000;
   display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1.5rem;
   transition:opacity .4s ease;
 }
-#loading-screen.fade-out{opacity:0;pointer-events:none}
+#loading-screen.out{opacity:0;pointer-events:none}
 .loading-hex{
   width:80px;height:80px;
   background:linear-gradient(135deg,var(--red) 50%,var(--yellow) 100%);
   clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%);
   display:grid;place-items:center;
-  font-family:'Bebas Neue',sans-serif;font-size:32px;color:#fff;letter-spacing:2px;
+  font-family:'Bebas Neue',sans-serif;font-size:32px;color:#fff;
   animation:spin 2s linear infinite;
 }
 @keyframes spin{to{transform:rotate(360deg)}}
-.loading-label{font-family:'Barlow Condensed',sans-serif;font-size:13px;letter-spacing:3px;text-transform:uppercase;color:var(--muted)}
+.loading-lbl{font-family:'Barlow Condensed',sans-serif;font-size:13px;letter-spacing:3px;text-transform:uppercase;color:var(--muted)}
 .loading-bar-wrap{width:200px;height:3px;background:var(--border);border-radius:2px;overflow:hidden}
-.loading-bar{height:100%;background:linear-gradient(90deg,var(--red),var(--yellow));width:0%;transition:width .3s ease;border-radius:2px}
+.loading-bar{height:100%;background:linear-gradient(90deg,var(--red),var(--yellow));width:0;transition:width .35s ease;border-radius:2px}
 
-/* NAV */
-nav{
-  position:sticky;top:0;z-index:100;
-  display:flex;align-items:center;justify-content:space-between;
-  padding:0 clamp(1rem,5vw,3rem);height:64px;
-  background:rgba(11,11,15,.92);backdrop-filter:blur(16px);
-  border-bottom:1px solid var(--border);
-}
+/* ── NAV ── */
+nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:0 clamp(1rem,5vw,3rem);height:64px;background:rgba(11,11,15,.92);backdrop-filter:blur(16px);border-bottom:1px solid var(--border)}
 .nav-logo{display:flex;align-items:center;gap:.75rem;cursor:pointer;text-decoration:none}
-.logo-hex{
-  width:36px;height:36px;
-  background:linear-gradient(135deg,var(--red) 50%,var(--yellow) 100%);
-  clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%);
-  display:grid;place-items:center;
-  font-family:'Bebas Neue',sans-serif;font-size:16px;color:#fff;
-}
-.logo-wordmark{font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:3px;color:var(--text)}
-.logo-wordmark span{color:var(--yellow)}
+.logo-hex{width:36px;height:36px;background:linear-gradient(135deg,var(--red) 50%,var(--yellow) 100%);clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%);display:grid;place-items:center;font-family:'Bebas Neue',sans-serif;font-size:16px;color:#fff;flex-shrink:0}
+.logo-wm{font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:3px;color:var(--text)}
+.logo-wm span{color:var(--yellow)}
 .nav-links{display:flex;align-items:center;gap:.25rem}
-.nav-btn{
-  font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:600;
-  letter-spacing:1.5px;text-transform:uppercase;
-  color:var(--muted);padding:.5rem .85rem;border-radius:6px;
-  background:transparent;border:none;cursor:pointer;
-  transition:color .2s,background .2s;
-}
-.nav-btn:hover,.nav-btn.active{color:var(--text);background:var(--border)}
+.nav-btn{font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);padding:.5rem .85rem;border-radius:6px;background:transparent;border:none;cursor:pointer;transition:color .2s,background .2s}
+.nav-btn:hover,.nav-btn.on{color:var(--text);background:var(--border)}
 .nav-btn.live{color:var(--yellow)}
 .nav-btn.live:hover{background:rgba(247,166,0,.1)}
-.nav-yt-btn{
-  font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;
-  letter-spacing:1.5px;text-transform:uppercase;
-  background:var(--red);color:#fff;
-  padding:.45rem 1.1rem;border-radius:6px;
-  text-decoration:none;transition:background .2s,transform .15s;
-}
-.nav-yt-btn:hover{background:var(--red-hot);transform:translateY(-1px)}
-.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;background:none;border:none;padding:4px}
-.hamburger span{width:22px;height:2px;background:var(--text);border-radius:2px;transition:.3s}
+.nav-yt{font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;background:var(--red);color:#fff;padding:.45rem 1.1rem;border-radius:6px;text-decoration:none;transition:background .2s}
+.nav-yt:hover{background:var(--red-hot)}
+.hbg{display:none;flex-direction:column;gap:5px;cursor:pointer;background:none;border:none;padding:4px}
+.hbg span{width:22px;height:2px;background:var(--text);border-radius:2px}
 
-.mobile-nav{display:none;position:fixed;inset:64px 0 0;background:rgba(11,11,15,.97);backdrop-filter:blur(20px);z-index:99;flex-direction:column;align-items:center;justify-content:center;gap:2.5rem}
-.mobile-nav.open{display:flex}
-.mobile-nav button{font-family:'Bebas Neue',sans-serif;font-size:2.8rem;letter-spacing:4px;color:var(--text);background:none;border:none;cursor:pointer;transition:color .2s}
-.mobile-nav button:hover{color:var(--yellow)}
+/* ── MOBILE NAV ── */
+#mob-nav{display:none;position:fixed;inset:64px 0 0;background:rgba(11,11,15,.97);backdrop-filter:blur(20px);z-index:99;flex-direction:column;align-items:center;justify-content:center;gap:2.5rem}
+#mob-nav.on{display:flex}
+#mob-nav button{font-family:'Bebas Neue',sans-serif;font-size:2.8rem;letter-spacing:4px;color:var(--text);background:none;border:none;cursor:pointer;transition:color .2s}
+#mob-nav button:hover{color:var(--yellow)}
 
-/* LIVE BADGE */
-.live-badge{display:inline-flex;align-items:center;gap:.4rem;background:var(--red);color:#fff;font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:.25rem .65rem;border-radius:4px}
-.live-dot{width:6px;height:6px;border-radius:50%;background:#fff;animation:pulse 1.2s infinite}
+/* ── LIVE BADGE ── */
+.lbadge{display:inline-flex;align-items:center;gap:.4rem;background:var(--red);color:#fff;font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:.25rem .65rem;border-radius:4px}
+.ldot{width:6px;height:6px;border-radius:50%;background:#fff;animation:pulse 1.2s infinite}
 @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.7)}}
 
-/* LIVE ALERT BAR */
-.live-alert{
-  background:linear-gradient(90deg,rgba(166,25,46,.95),rgba(196,30,58,.8));
-  border-bottom:2px solid var(--red-hot);
-  padding:.85rem clamp(1rem,5vw,3rem);
-  display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;
-}
-.live-alert-title{font-family:'Barlow Condensed',sans-serif;font-size:17px;font-weight:700}
-.live-alert-sub{font-size:13px;color:rgba(255,255,255,.7)}
-.btn-watch{
-  background:#fff;color:var(--red);
-  font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:800;
-  letter-spacing:1.5px;text-transform:uppercase;
-  padding:.5rem 1.2rem;border-radius:6px;text-decoration:none;white-space:nowrap;
-  transition:transform .15s,box-shadow .15s;
-}
-.btn-watch:hover{transform:translateY(-1px);box-shadow:0 4px 12px rgba(0,0,0,.3)}
+/* ── LIVE ALERT BAR ── */
+#live-bar{display:none;background:linear-gradient(90deg,rgba(166,25,46,.95),rgba(196,30,58,.8));border-bottom:2px solid var(--red-hot);padding:.85rem clamp(1rem,5vw,3rem);align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap}
+.live-bar-title{font-family:'Barlow Condensed',sans-serif;font-size:17px;font-weight:700}
+.live-bar-sub{font-size:13px;color:rgba(255,255,255,.7)}
+.btn-watch{background:#fff;color:var(--red);font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;padding:.5rem 1.2rem;border-radius:6px;text-decoration:none;white-space:nowrap;transition:transform .15s}
+.btn-watch:hover{transform:translateY(-1px)}
 
-/* HERO */
+/* ── HERO ── */
 .hero{position:relative;min-height:82vh;display:flex;align-items:flex-end;overflow:hidden}
-.hero-media{position:absolute;inset:0;overflow:hidden}
-.hero-media img{width:100%;height:100%;object-fit:cover;transition:transform 8s ease;transform:scale(1.05)}
-.hero-media img.loaded{transform:scale(1)}
-.hero-grad{position:absolute;inset:0;background:linear-gradient(to top,var(--black) 0%,rgba(11,11,15,.7) 40%,rgba(11,11,15,.2) 70%,transparent 100%)}
-.hero-grad2{position:absolute;inset:0;background:linear-gradient(to right,var(--black) 0%,transparent 55%)}
+.hero-media{position:absolute;inset:0;overflow:hidden;background:var(--dark)}
+.hero-media img{width:100%;height:100%;object-fit:cover;opacity:.38;transition:transform 8s ease;transform:scale(1.05)}
+.hero-media img.in{transform:scale(1)}
+.hero-g1{position:absolute;inset:0;background:linear-gradient(to top,var(--black) 0%,rgba(11,11,15,.65) 45%,transparent 100%)}
+.hero-g2{position:absolute;inset:0;background:linear-gradient(to right,var(--black) 0%,transparent 58%)}
 .hero-glow{position:absolute;inset:0;background:radial-gradient(ellipse at 75% 15%,rgba(166,25,46,.2) 0%,transparent 55%)}
-.hero-content{position:relative;z-index:2;padding:clamp(2rem,8vw,5rem) clamp(1rem,5vw,3rem);max-width:800px}
-.hero-eyebrow{display:inline-flex;align-items:center;gap:.6rem;font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--yellow);margin-bottom:1rem}
-.hero-eyebrow::before{content:'';width:28px;height:2px;background:var(--yellow)}
-.hero h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(2rem,5vw,3.8rem);line-height:1.05;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:1.2rem;word-break:break-word}
-.hero h1 em{color:var(--yellow);font-style:normal}
-.hero p{font-size:clamp(.9rem,2vw,1.05rem);color:var(--muted);line-height:1.75;max-width:540px;margin-bottom:2rem}
+.hero-body{position:relative;z-index:2;padding:clamp(2rem,8vw,5rem) clamp(1rem,5vw,3rem);max-width:760px}
+.hero-eye{display:inline-flex;align-items:center;gap:.6rem;font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--yellow);margin-bottom:1rem}
+.hero-eye::before{content:'';width:28px;height:2px;background:var(--yellow)}
+.hero-body h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(2rem,4.5vw,3.8rem);line-height:1.05;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:1.2rem}
+.hero-body h1 em{color:var(--yellow);font-style:normal}
+.hero-body p{font-size:clamp(.88rem,1.8vw,1rem);color:var(--muted);line-height:1.75;max-width:520px;margin-bottom:2rem}
 .hero-btns{display:flex;flex-wrap:wrap;gap:1rem}
 .btn-primary{display:inline-flex;align-items:center;gap:.5rem;background:var(--yellow);color:var(--black);font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;padding:.8rem 1.8rem;border-radius:8px;text-decoration:none;border:none;cursor:pointer;transition:background .2s,transform .15s,box-shadow .2s}
 .btn-primary:hover{background:var(--yellow-lt);transform:translateY(-2px);box-shadow:0 8px 28px rgba(247,166,0,.3)}
 .btn-ghost{display:inline-flex;align-items:center;gap:.5rem;background:transparent;color:var(--text);font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:.8rem 1.8rem;border-radius:8px;text-decoration:none;border:1.5px solid var(--border);cursor:pointer;transition:border-color .2s,transform .15s}
 .btn-ghost:hover{border-color:var(--muted);transform:translateY(-2px)}
 
-/* CHANNEL STATS BAR */
-.stats-bar{
-  display:flex;gap:2rem;flex-wrap:wrap;align-items:center;
-  background:linear-gradient(90deg,rgba(247,166,0,.06),transparent);
-  border:1px solid rgba(247,166,0,.15);
-  border-radius:12px;padding:1.25rem 1.75rem;margin-bottom:0;
-}
-.stats-bar-avatar{width:52px;height:52px;border-radius:50%;object-fit:cover;border:2px solid var(--yellow);flex-shrink:0}
-.stat-item{display:flex;flex-direction:column}
-.stat-val{font-family:'Barlow Condensed',sans-serif;font-size:1.6rem;font-weight:700;color:var(--yellow);line-height:1}
-.stat-lbl{font-size:.72rem;color:var(--dimmed);letter-spacing:.8px;text-transform:uppercase;margin-top:.15rem}
-.stats-bar-cta{margin-left:auto}
+/* ── CHANNEL STATS BAR ── */
+.stats-bar{display:none;flex-wrap:wrap;gap:2rem;align-items:center;background:linear-gradient(90deg,rgba(247,166,0,.06),transparent);border:1px solid rgba(247,166,0,.15);border-radius:12px;padding:1.25rem 1.75rem}
+.stats-bar.visible{display:flex}
+.sb-avatar{width:52px;height:52px;border-radius:50%;object-fit:cover;border:2px solid var(--yellow);flex-shrink:0}
+.sb-stat{display:flex;flex-direction:column}
+.sb-val{font-family:'Barlow Condensed',sans-serif;font-size:1.6rem;font-weight:700;color:var(--yellow);line-height:1}
+.sb-lbl{font-size:.72rem;color:var(--dimmed);letter-spacing:.8px;text-transform:uppercase;margin-top:.1rem}
 
-/* SECTIONS */
+/* ── SECTIONS ── */
 section{padding:clamp(3rem,8vw,5rem) clamp(1rem,5vw,3rem)}
-.sec-header{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:2rem;flex-wrap:wrap;gap:.75rem}
-.sec-eyebrow{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--yellow);margin-bottom:.3rem}
-.sec-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(2rem,5vw,3rem);letter-spacing:2px;line-height:1}
-.sec-link{font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);text-decoration:none;display:flex;align-items:center;gap:.3rem;background:none;border:none;cursor:pointer;transition:color .2s}
-.sec-link:hover{color:var(--yellow)}
-.sec-link::after{content:'→'}
+.sec-hd{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:2rem;flex-wrap:wrap;gap:.75rem}
+.sec-eye{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--yellow);margin-bottom:.3rem}
+.sec-ttl{font-family:'Bebas Neue',sans-serif;font-size:clamp(2rem,5vw,3rem);letter-spacing:2px;line-height:1}
+.sec-lnk{font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);text-decoration:none;display:flex;align-items:center;gap:.3rem;background:none;border:none;cursor:pointer;transition:color .2s}
+.sec-lnk:hover{color:var(--yellow)}
+.sec-lnk::after{content:'→'}
 .divider{height:1px;background:var(--border);margin:0 clamp(1rem,5vw,3rem)}
 
-/* FEATURED VIDEO */
-.featured-layout{display:grid;grid-template-columns:1fr 380px;gap:2.5rem;align-items:center}
-.feat-thumb{
-  position:relative;aspect-ratio:16/9;border-radius:16px;overflow:hidden;
-  background:var(--card);
-  box-shadow:0 0 0 1px var(--border),0 40px 80px rgba(0,0,0,.7);
-  display:block;text-decoration:none;
-}
-.feat-thumb img{width:100%;height:100%;object-fit:cover;transition:transform .5s ease}
+/* ── FEATURED ── */
+.feat-layout{display:grid;grid-template-columns:1fr 380px;gap:2.5rem;align-items:center}
+.feat-thumb{position:relative;aspect-ratio:16/9;border-radius:16px;overflow:hidden;background:var(--card);box-shadow:0 0 0 1px var(--border),0 40px 80px rgba(0,0,0,.7);display:block;text-decoration:none}
+.feat-thumb img{width:100%;height:100%;object-fit:cover;transition:transform .5s}
 .feat-thumb:hover img{transform:scale(1.03)}
-.feat-thumb-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.65) 0%,transparent 60%);display:flex;align-items:center;justify-content:center}
+.feat-ov{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.65) 0%,transparent 60%);display:flex;align-items:center;justify-content:center}
 .feat-play{width:76px;height:76px;background:rgba(247,166,0,.95);border-radius:50%;display:grid;place-items:center;box-shadow:0 0 0 14px rgba(247,166,0,.15);transition:transform .2s,box-shadow .2s}
-.feat-thumb:hover .feat-play{transform:scale(1.1);box-shadow:0 0 0 22px rgba(247,166,0,.1)}
+.feat-thumb:hover .feat-play{transform:scale(1.1);box-shadow:0 0 0 22px rgba(247,166,0,.08)}
 .feat-play svg{width:30px;height:30px;fill:var(--black);margin-left:3px}
 .feat-info{display:flex;flex-direction:column;gap:1.1rem}
 .feat-tag{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--yellow)}
-.feat-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(1.8rem,3vw,2.6rem);line-height:1;letter-spacing:1px}
+.feat-ttl{font-family:'Bebas Neue',sans-serif;font-size:clamp(1.8rem,3vw,2.6rem);line-height:1.05;letter-spacing:1px}
 .feat-desc{font-size:.88rem;color:var(--muted);line-height:1.75}
 .feat-stats{display:flex;gap:1.5rem;flex-wrap:wrap}
-.feat-stat{display:flex;flex-direction:column}
-.feat-stat-val{font-family:'Barlow Condensed',sans-serif;font-size:1.4rem;font-weight:700;color:var(--yellow)}
-.feat-stat-lbl{font-size:.72rem;color:var(--dimmed);letter-spacing:.5px;text-transform:uppercase}
+.fst{display:flex;flex-direction:column}
+.fst-val{font-family:'Barlow Condensed',sans-serif;font-size:1.4rem;font-weight:700;color:var(--yellow)}
+.fst-lbl{font-size:.72rem;color:var(--dimmed);letter-spacing:.5px;text-transform:uppercase}
 
-/* VIDEO GRID */
-.video-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,300px),1fr));gap:1.25rem}
+/* ── VIDEO GRID ── */
+.vgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,300px),1fr));gap:1.25rem}
 .vcard{background:var(--card);border:1px solid var(--border);border-radius:12px;overflow:hidden;cursor:pointer;transition:transform .25s,border-color .25s,box-shadow .25s;text-decoration:none;color:inherit;display:block}
 .vcard:hover{transform:translateY(-4px);border-color:rgba(247,166,0,.3);box-shadow:0 16px 40px rgba(0,0,0,.5)}
-.vcard-thumb{position:relative;aspect-ratio:16/9;overflow:hidden;background:var(--dark)}
-.vcard-thumb img{width:100%;height:100%;object-fit:cover;transition:transform .4s}
-.vcard:hover .vcard-thumb img{transform:scale(1.05)}
-.vcard-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.65) 0%,transparent 55%);display:flex;align-items:center;justify-content:center}
-.play-circle{width:52px;height:52px;background:rgba(247,166,0,.92);border-radius:50%;display:grid;place-items:center;opacity:0;transform:scale(.65);transition:opacity .25s,transform .25s}
-.vcard:hover .play-circle{opacity:1;transform:scale(1)}
-.play-circle svg{width:20px;height:20px;fill:var(--black);margin-left:2px}
-.vcard-dur{position:absolute;bottom:8px;right:8px;background:rgba(0,0,0,.82);color:#fff;font-size:11px;font-weight:600;letter-spacing:.3px;padding:2px 7px;border-radius:4px}
-.vcard-live-tag{position:absolute;top:8px;left:8px}
-.vcard-body{padding:1rem 1.1rem 1.25rem}
-.vcard-meta{display:flex;align-items:center;justify-content:space-between;margin-bottom:.45rem}
-.vcard-cat{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--yellow)}
-.vcard-views{font-size:11px;color:var(--dimmed)}
-.vcard-title{font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:700;line-height:1.35;margin-bottom:.4rem}
-.vcard-date{font-size:11px;color:var(--dimmed)}
+.vthumb{position:relative;aspect-ratio:16/9;overflow:hidden;background:var(--dark)}
+.vthumb img{width:100%;height:100%;object-fit:cover;transition:transform .4s}
+.vcard:hover .vthumb img{transform:scale(1.05)}
+.vov{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.65) 0%,transparent 55%);display:flex;align-items:center;justify-content:center}
+.pcirc{width:52px;height:52px;background:rgba(247,166,0,.92);border-radius:50%;display:grid;place-items:center;opacity:0;transform:scale(.65);transition:opacity .25s,transform .25s}
+.vcard:hover .pcirc{opacity:1;transform:scale(1)}
+.pcirc svg{width:20px;height:20px;fill:var(--black);margin-left:2px}
+.vdur{position:absolute;bottom:8px;right:8px;background:rgba(0,0,0,.82);color:#fff;font-size:11px;font-weight:600;padding:2px 7px;border-radius:4px}
+.vlivetag{position:absolute;top:8px;left:8px}
+.vbody{padding:1rem 1.1rem 1.25rem}
+.vmeta{display:flex;align-items:center;justify-content:space-between;margin-bottom:.4rem}
+.vcat{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--yellow)}
+.vviews{font-size:11px;color:var(--dimmed)}
+.vtitle{font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:700;line-height:1.35;margin-bottom:.4rem}
+.vdate{font-size:11px;color:var(--dimmed)}
 
-/* SOCIAL */
-.social-band{background:var(--dark);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
-.social-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:1rem}
+/* ── SOCIAL ── */
+.soc-band{background:var(--dark);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+.soc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:1rem}
 .soc-card{display:flex;align-items:center;gap:1rem;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.2rem 1.4rem;text-decoration:none;color:var(--text);transition:transform .2s,border-color .25s}
 .soc-card:hover{transform:translateY(-3px)}
 .soc-card.yt:hover{border-color:rgba(255,0,0,.5)}
 .soc-card.ig:hover{border-color:rgba(225,48,108,.5)}
 .soc-card.tw:hover{border-color:rgba(29,161,242,.5)}
 .soc-card.lt:hover{border-color:rgba(57,183,97,.5)}
-.soc-icon{width:44px;height:44px;border-radius:10px;display:grid;place-items:center;flex-shrink:0;font-size:20px}
-.yt .soc-icon{background:rgba(255,0,0,.12)}
-.ig .soc-icon{background:rgba(225,48,108,.12)}
-.tw .soc-icon{background:rgba(29,161,242,.12)}
-.lt .soc-icon{background:rgba(57,183,97,.12)}
-.soc-platform{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--dimmed)}
-.soc-handle{font-size:14px;font-weight:600;margin-top:.1rem}
-.soc-count{font-size:12px;color:var(--yellow);font-weight:600;margin-top:.2rem}
+.soc-ico{width:44px;height:44px;border-radius:10px;display:grid;place-items:center;flex-shrink:0;font-size:20px}
+.yt .soc-ico{background:rgba(255,0,0,.12)}
+.ig .soc-ico{background:rgba(225,48,108,.12)}
+.tw .soc-ico{background:rgba(29,161,242,.12)}
+.lt .soc-ico{background:rgba(57,183,97,.12)}
+.soc-plat{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--dimmed)}
+.soc-hnd{font-size:14px;font-weight:600;margin-top:.1rem}
+.soc-cnt{font-size:12px;color:var(--yellow);font-weight:600;margin-top:.2rem}
 
-/* CTA BAND */
-.cta-band{
-  background:linear-gradient(135deg,rgba(166,25,46,.22) 0%,transparent 55%),var(--dark);
-  border-top:1px solid rgba(166,25,46,.25);border-bottom:1px solid rgba(166,25,46,.25);
-  padding:clamp(3rem,7vw,5rem) clamp(1rem,5vw,3rem);text-align:center;
-}
-.cta-eyebrow{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--yellow);margin-bottom:.75rem}
-.cta-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(2.5rem,6vw,4.8rem);letter-spacing:2px;margin-bottom:.75rem}
+/* ── CTA ── */
+.cta-band{background:linear-gradient(135deg,rgba(166,25,46,.22) 0%,transparent 55%),var(--dark);border-top:1px solid rgba(166,25,46,.25);border-bottom:1px solid rgba(166,25,46,.25);padding:clamp(3rem,7vw,5rem) clamp(1rem,5vw,3rem);text-align:center}
+.cta-eye{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--yellow);margin-bottom:.75rem}
+.cta-ttl{font-family:'Bebas Neue',sans-serif;font-size:clamp(2.5rem,6vw,4.8rem);letter-spacing:2px;margin-bottom:.75rem}
 .cta-sub{font-size:.95rem;color:var(--muted);margin-bottom:2rem;max-width:500px;margin-left:auto;margin-right:auto;line-height:1.75}
 .cta-btns{display:flex;justify-content:center;flex-wrap:wrap;gap:1rem}
 
-/* LIVE PAGE */
-.live-embed-outer{position:relative;aspect-ratio:16/9;border-radius:14px;overflow:hidden;background:#000;border:1px solid var(--border);max-width:900px;margin-bottom:2rem}
-.live-embed-outer iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+/* ── LIVE PAGE ── */
+.live-embed{position:relative;aspect-ratio:16/9;border-radius:14px;overflow:hidden;background:#000;border:1px solid var(--border);max-width:900px;margin-bottom:2rem}
+.live-embed iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
 .no-live-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:4rem 2rem;text-align:center;max-width:900px;margin-bottom:2rem}
-.no-live-card .icon{font-size:4rem;margin-bottom:1rem}
+.no-live-card .ico{font-size:4rem;margin-bottom:1rem}
 .no-live-card h3{font-family:'Bebas Neue',sans-serif;font-size:2.2rem;letter-spacing:2px;color:var(--muted);margin-bottom:.5rem}
 .no-live-card p{font-size:.9rem;color:var(--dimmed);line-height:1.7}
 
-/* ABOUT */
+/* ── ABOUT ── */
 .about-hero{text-align:center;padding:clamp(3rem,8vw,6rem) clamp(1rem,5vw,3rem);max-width:700px;margin:0 auto}
 .about-hex{width:100px;height:100px;background:linear-gradient(135deg,var(--red) 50%,var(--yellow) 100%);clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%);display:grid;place-items:center;font-family:'Bebas Neue',sans-serif;font-size:42px;color:#fff;margin:0 auto 2rem}
 .about-hero h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(2.5rem,7vw,5.5rem);letter-spacing:3px;margin-bottom:1rem}
 .about-hero p{font-size:1rem;color:var(--muted);line-height:1.8}
-.values-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:1.25rem;max-width:900px;margin:0 auto;padding:0 clamp(1rem,5vw,3rem) clamp(3rem,6vw,4rem)}
+.val-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:1.25rem;max-width:900px;margin:0 auto;padding:0 clamp(1rem,5vw,3rem) clamp(3rem,6vw,4rem)}
 .val-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.5rem;transition:border-color .2s}
 .val-card:hover{border-color:rgba(247,166,0,.25)}
-.val-icon{font-size:2rem;margin-bottom:.75rem}
-.val-title{font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:700;letter-spacing:.5px;margin-bottom:.5rem}
-.val-text{font-size:.84rem;color:var(--muted);line-height:1.65}
+.val-ico{font-size:2rem;margin-bottom:.75rem}
+.val-ttl{font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:700;letter-spacing:.5px;margin-bottom:.5rem}
+.val-txt{font-size:.84rem;color:var(--muted);line-height:1.65}
 
-/* CONTACT */
-.contact-wrap{max-width:680px;margin:0 auto;padding:clamp(2rem,6vw,4rem) clamp(1rem,5vw,3rem)}
+/* ── CONTACT ── */
+.con-wrap{max-width:680px;margin:0 auto;padding:clamp(2rem,6vw,4rem) clamp(1rem,5vw,3rem)}
 .con-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:2rem;margin-bottom:1.5rem;display:flex;align-items:center;gap:1.5rem;text-decoration:none;color:inherit;transition:transform .2s,border-color .2s}
 .con-card:hover{transform:translateY(-2px);border-color:rgba(247,166,0,.25)}
-.con-icon{width:56px;height:56px;border-radius:12px;background:rgba(247,166,0,.08);border:1px solid rgba(247,166,0,.15);display:grid;place-items:center;font-size:24px;flex-shrink:0}
-.con-platform{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--dimmed);margin-bottom:.25rem}
+.con-ico{width:56px;height:56px;border-radius:12px;background:rgba(247,166,0,.08);border:1px solid rgba(247,166,0,.15);display:grid;place-items:center;font-size:24px;flex-shrink:0}
+.con-plat{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--dimmed);margin-bottom:.25rem}
 .con-val{font-size:1.05rem;font-weight:600}
 .con-note{font-size:.8rem;color:var(--muted);margin-top:.2rem}
 
-/* FOOTER */
+/* ── FOOTER ── */
 footer{background:var(--dark);border-top:1px solid var(--border);padding:clamp(2.5rem,5vw,4rem) clamp(1rem,5vw,3rem) 1.5rem}
-.footer-grid{display:grid;grid-template-columns:1.5fr repeat(3,1fr);gap:2.5rem;margin-bottom:2.5rem}
-.footer-brand p{font-size:.85rem;color:var(--muted);line-height:1.7;margin-top:.75rem;max-width:280px}
-.footer-col h4{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--dimmed);margin-bottom:1rem}
-.footer-col ul{list-style:none;display:flex;flex-direction:column;gap:.6rem}
-.footer-col ul li a{font-size:.85rem;color:var(--muted);text-decoration:none;background:none;border:none;cursor:pointer;transition:color .2s;font-family:'Manrope',sans-serif}
-.footer-col ul li a:hover{color:var(--yellow)}
-.footer-bottom{padding-top:1.5rem;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.75rem}
-.footer-copy{font-size:.8rem;color:var(--dimmed)}
-.footer-copy span{color:var(--red)}
-.footer-badge{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--dimmed);display:flex;align-items:center;gap:.4rem}
-.footer-badge::before{content:'';width:10px;height:10px;border-radius:50%;background:linear-gradient(135deg,var(--red),var(--yellow))}
+.ft-grid{display:grid;grid-template-columns:1.5fr repeat(3,1fr);gap:2.5rem;margin-bottom:2.5rem}
+.ft-brand p{font-size:.85rem;color:var(--muted);line-height:1.7;margin-top:.75rem;max-width:280px}
+.ft-col h4{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--dimmed);margin-bottom:1rem}
+.ft-col ul{list-style:none;display:flex;flex-direction:column;gap:.6rem}
+.ft-col ul li a{font-size:.85rem;color:var(--muted);text-decoration:none;background:none;border:none;cursor:pointer;transition:color .2s}
+.ft-col ul li a:hover{color:var(--yellow)}
+.ft-bot{padding-top:1.5rem;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.75rem}
+.ft-copy{font-size:.8rem;color:var(--dimmed)}
+.ft-copy span{color:var(--red)}
+.ft-badge{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--dimmed);display:flex;align-items:center;gap:.4rem}
+.ft-badge::before{content:'';width:10px;height:10px;border-radius:50%;background:linear-gradient(135deg,var(--red),var(--yellow))}
+.cache-hint{font-size:.75rem;color:var(--dimmed);cursor:pointer}
+.cache-hint:hover{color:var(--muted)}
 
-/* ERROR BANNER */
-.err-banner{background:rgba(224,92,92,.1);border:1px solid rgba(224,92,92,.3);border-radius:10px;padding:1rem 1.5rem;font-size:.88rem;color:#E05C5C;display:flex;align-items:center;gap:.75rem;margin-bottom:1.5rem}
+/* ── SKELETON ── */
+.sk{background:linear-gradient(90deg,var(--card) 25%,var(--border) 50%,var(--card) 75%);background-size:200% 100%;animation:sh 1.5s infinite;border-radius:8px}
+@keyframes sh{0%{background-position:200% 0}100%{background-position:-200% 0}}
+.sk-t{aspect-ratio:16/9;border-radius:10px}
+.sk-l{height:13px;border-radius:4px;margin-top:8px}
+.w90{width:90%}.w60{width:60%}.w40{width:40%}
 
-/* SKELETON */
-.sk{background:linear-gradient(90deg,var(--card) 25%,var(--border) 50%,var(--card) 75%);background-size:200% 100%;animation:shimmer 1.5s infinite;border-radius:8px}
-@keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
-.sk-thumb{aspect-ratio:16/9;border-radius:10px}
-.sk-line{height:13px;border-radius:4px;margin-top:8px}
-.sk-line.w90{width:90%}.sk-line.w60{width:60%}.sk-line.w40{width:40%}
-
-/* PAGE TRANSITIONS */
+/* ── PAGES ── */
 .page{display:none}
-.page.active{display:block}
-@keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
-.page.active>*{animation:fadeUp .4s ease both}
-.page.active>*:nth-child(2){animation-delay:.06s}
-.page.active>*:nth-child(3){animation-delay:.12s}
-.page.active>*:nth-child(4){animation-delay:.18s}
+.page.on{display:block}
+@keyframes fu{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+.page.on>*{animation:fu .35s ease both}
+.page.on>*:nth-child(2){animation-delay:.06s}
+.page.on>*:nth-child(3){animation-delay:.12s}
+.page.on>*:nth-child(4){animation-delay:.18s}
 
-/* LOAD MORE */
-#load-more-btn{display:none;margin:2.5rem auto 0;font-size:14px;padding:.75rem 2rem}
-
-/* RESPONSIVE */
-@media(max-width:960px){.featured-layout{grid-template-columns:1fr}.feat-info{order:-1}.footer-grid{grid-template-columns:1fr 1fr}}
-@media(max-width:640px){.nav-links,.nav-yt-btn{display:none}.hamburger{display:flex}.footer-grid{grid-template-columns:1fr}}
+/* ── RESPONSIVE ── */
+@media(max-width:960px){.feat-layout{grid-template-columns:1fr}.feat-info{order:-1}.ft-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:640px){.nav-links,.nav-yt{display:none}.hbg{display:flex}.ft-grid{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
 
-<!-- LOADING SCREEN -->
+<!-- LOADING -->
 <div id="loading-screen">
   <div class="loading-hex">P4</div>
-  <div class="loading-label" id="loading-label">Bağlanıyor...</div>
-  <div class="loading-bar-wrap"><div class="loading-bar" id="loading-bar"></div></div>
+  <div class="loading-lbl" id="load-lbl">Yükleniyor...</div>
+  <div class="loading-bar-wrap"><div class="loading-bar" id="load-bar"></div></div>
 </div>
 
 <!-- NAV -->
 <nav>
-  <div class="nav-logo" onclick="goPage('home')">
+  <div class="nav-logo" onclick="go('home')">
     <div class="logo-hex">P4</div>
-    <div class="logo-wordmark">P4 <span>OTOPARK</span></div>
+    <div class="logo-wm">P4 <span>OTOPARK</span></div>
   </div>
   <div class="nav-links">
-    <button class="nav-btn active" id="nav-home" onclick="goPage('home')">Ana Sayfa</button>
-    <button class="nav-btn" id="nav-videos" onclick="goPage('videos')">Videolar</button>
-    <button class="nav-btn live" id="nav-live" onclick="goPage('live')">🔴 Canlı</button>
-    <button class="nav-btn" id="nav-about" onclick="goPage('about')">Hakkında</button>
-    <button class="nav-btn" id="nav-contact" onclick="goPage('contact')">İletişim</button>
+    <button class="nav-btn on" id="nb-home" onclick="go('home')">Ana Sayfa</button>
+    <button class="nav-btn"    id="nb-videos" onclick="go('videos')">Videolar</button>
+    <button class="nav-btn live" id="nb-live"  onclick="go('live')">🔴 Canlı</button>
+    <button class="nav-btn"    id="nb-about"   onclick="go('about')">Hakkında</button>
+    <button class="nav-btn"    id="nb-contact" onclick="go('contact')">İletişim</button>
   </div>
-  <a href="https://www.youtube.com/@P4Otopark" target="_blank" class="nav-yt-btn">Kanala Git →</a>
-  <button class="hamburger" onclick="toggleMob()"><span></span><span></span><span></span></button>
+  <a href="https://www.youtube.com/@P4Otopark" target="_blank" class="nav-yt">Kanala Git →</a>
+  <button class="hbg" onclick="toggleMob()"><span></span><span></span><span></span></button>
 </nav>
 
 <!-- MOBILE NAV -->
-<div class="mobile-nav" id="mob-nav">
-  <button onclick="goPage('home');toggleMob()">Ana Sayfa</button>
-  <button onclick="goPage('videos');toggleMob()">Videolar</button>
-  <button onclick="goPage('live');toggleMob()" style="color:var(--yellow)">🔴 Canlı</button>
-  <button onclick="goPage('about');toggleMob()">Hakkında</button>
-  <button onclick="goPage('contact');toggleMob()">İletişim</button>
+<div id="mob-nav">
+  <button onclick="go('home');toggleMob()">Ana Sayfa</button>
+  <button onclick="go('videos');toggleMob()">Videolar</button>
+  <button onclick="go('live');toggleMob()" style="color:var(--yellow)">🔴 Canlı</button>
+  <button onclick="go('about');toggleMob()">Hakkında</button>
+  <button onclick="go('contact');toggleMob()">İletişim</button>
 </div>
 
-<!-- ═══════════ HOME ═══════════ -->
-<div id="page-home" class="page">
-  <!-- Live Alert -->
-  <div id="live-bar" style="display:none" class="live-alert">
-    <div style="display:flex;align-items:center;gap:1rem;flex:1;flex-wrap:wrap">
-      <div class="live-badge"><div class="live-dot"></div>CANLI YAYIN</div>
-      <div>
-        <div class="live-alert-title" id="live-bar-title">Canlı Yayın</div>
-        <div class="live-alert-sub">P4 Otopark</div>
-      </div>
+<!-- LIVE ALERT BAR -->
+<div id="live-bar">
+  <div style="display:flex;align-items:center;gap:1rem;flex:1;flex-wrap:wrap">
+    <div class="lbadge"><div class="ldot"></div>CANLI YAYIN</div>
+    <div>
+      <div class="live-bar-title" id="live-bar-ttl">Canlı Yayın</div>
+      <div class="live-bar-sub">P4 Otopark</div>
     </div>
-    <a id="live-bar-link" href="#" target="_blank" class="btn-watch">Şimdi İzle →</a>
   </div>
+  <a id="live-bar-lnk" href="#" target="_blank" class="btn-watch">Şimdi İzle →</a>
+</div>
 
-  <!-- HERO -->
+<!-- ═══ HOME ═══ -->
+<div id="page-home" class="page on">
   <div class="hero">
-    <div class="hero-media">
-      <img id="hero-thumb" src="" alt="" onload="this.classList.add('loaded')" onerror="this.style.opacity='0'">
-    </div>
-    <div class="hero-grad"></div>
-    <div class="hero-grad2"></div>
-    <div class="hero-glow"></div>
-    <div class="hero-content">
-      <div class="hero-eyebrow">Son Video</div>
-      <h1 id="hero-title">P4 <em>OTOPARK</em></h1>
+    <div class="hero-media"><img id="hero-img" src="" alt=""></div>
+    <div class="hero-g1"></div><div class="hero-g2"></div><div class="hero-glow"></div>
+    <div class="hero-body">
+      <div class="hero-eye">Son Video</div>
+      <h1 id="hero-ttl">P4 <em>OTOPARK</em></h1>
       <p id="hero-desc">Galatasaray odaklı maç analizleri, transfer gündemi ve canlı yayınlar.</p>
       <div class="hero-btns">
-        <a id="hero-watch-btn" href="#" target="_blank" class="btn-primary">
+        <a id="hero-btn" href="#" target="_blank" class="btn-primary">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>Videoyu İzle
         </a>
-        <button class="btn-ghost" onclick="goPage('videos')">Tüm İçerikler →</button>
+        <button class="btn-ghost" onclick="go('videos')">Tüm İçerikler →</button>
       </div>
     </div>
   </div>
 
-  <!-- Channel Stats -->
   <section style="padding-bottom:0">
-    <div id="stats-bar" class="stats-bar" style="display:none">
-      <img id="ch-avatar" class="stats-bar-avatar" src="" alt="P4 Otopark">
-      <div class="stat-item"><div class="stat-val" id="stat-subs">—</div><div class="stat-lbl">Abone</div></div>
-      <div class="stat-item"><div class="stat-val" id="stat-views">—</div><div class="stat-lbl">Toplam İzlenme</div></div>
-      <div class="stat-item"><div class="stat-val" id="stat-vids">—</div><div class="stat-lbl">Video</div></div>
-      <div class="stats-bar-cta">
+    <div id="stats-bar" class="stats-bar">
+      <img id="sb-avatar" class="sb-avatar" src="" alt="P4 Otopark">
+      <div class="sb-stat"><div class="sb-val" id="sb-subs">—</div><div class="sb-lbl">Abone</div></div>
+      <div class="sb-stat"><div class="sb-val" id="sb-views">—</div><div class="sb-lbl">Toplam İzlenme</div></div>
+      <div class="sb-stat"><div class="sb-val" id="sb-vids">—</div><div class="sb-lbl">Video</div></div>
+      <div style="margin-left:auto">
         <a href="https://www.youtube.com/@P4Otopark" target="_blank" class="btn-primary" style="font-size:13px;padding:.6rem 1.2rem">▶ Abone Ol</a>
       </div>
     </div>
   </section>
 
-  <!-- Featured -->
   <section>
-    <div class="sec-header">
-      <div><div class="sec-eyebrow">Öne Çıkan</div><h2 class="sec-title">Son Video</h2></div>
-    </div>
-    <div id="featured-wrap" class="featured-layout">
-      <div class="sk sk-thumb"></div>
+    <div class="sec-hd"><div><div class="sec-eye">Öne Çıkan</div><h2 class="sec-ttl">Son Video</h2></div></div>
+    <!-- Featured rendered here by JS -->
+    <div id="featured-area" class="feat-layout">
+      <div class="sk sk-t"></div>
       <div style="display:flex;flex-direction:column;gap:1rem">
-        <div class="sk sk-line w40"></div>
-        <div class="sk sk-line w90" style="height:36px"></div>
-        <div class="sk sk-line w60"></div>
-        <div class="sk sk-line w40" style="height:28px"></div>
+        <div class="sk sk-l w40"></div>
+        <div class="sk sk-l w90" style="height:36px"></div>
+        <div class="sk sk-l w60"></div>
       </div>
     </div>
   </section>
 
   <div class="divider"></div>
 
-  <!-- Latest Videos -->
   <section>
-    <div class="sec-header">
-      <div><div class="sec-eyebrow">Son Yüklenenler</div><h2 class="sec-title">Son Videolar</h2></div>
-      <button class="sec-link" onclick="goPage('videos')">Tümünü Gör</button>
+    <div class="sec-hd">
+      <div><div class="sec-eye">Son Yüklenenler</div><h2 class="sec-ttl">Son Videolar</h2></div>
+      <button class="sec-lnk" onclick="go('videos')">Tümünü Gör</button>
     </div>
-    <div class="video-grid" id="home-grid">
-      <div class="vcard" style="cursor:default"><div class="sk sk-thumb"></div><div class="vcard-body"><div class="sk sk-line w90"></div><div class="sk sk-line w60"></div></div></div>
-      <div class="vcard" style="cursor:default"><div class="sk sk-thumb"></div><div class="vcard-body"><div class="sk sk-line w90"></div><div class="sk sk-line w60"></div></div></div>
-      <div class="vcard" style="cursor:default"><div class="sk sk-thumb"></div><div class="vcard-body"><div class="sk sk-line w90"></div><div class="sk sk-line w60"></div></div></div>
-      <div class="vcard" style="cursor:default"><div class="sk sk-thumb"></div><div class="vcard-body"><div class="sk sk-line w90"></div><div class="sk sk-line w60"></div></div></div>
-      <div class="vcard" style="cursor:default"><div class="sk sk-thumb"></div><div class="vcard-body"><div class="sk sk-line w90"></div><div class="sk sk-line w60"></div></div></div>
-      <div class="vcard" style="cursor:default"><div class="sk sk-thumb"></div><div class="vcard-body"><div class="sk sk-line w90"></div><div class="sk sk-line w60"></div></div></div>
+    <div class="vgrid" id="home-grid">
+      <div class="vcard" style="cursor:default"><div class="sk sk-t"></div><div class="vbody"><div class="sk sk-l w90"></div><div class="sk sk-l w60"></div></div></div>
+      <div class="vcard" style="cursor:default"><div class="sk sk-t"></div><div class="vbody"><div class="sk sk-l w90"></div><div class="sk sk-l w60"></div></div></div>
+      <div class="vcard" style="cursor:default"><div class="sk sk-t"></div><div class="vbody"><div class="sk sk-l w90"></div><div class="sk sk-l w60"></div></div></div>
+      <div class="vcard" style="cursor:default"><div class="sk sk-t"></div><div class="vbody"><div class="sk sk-l w90"></div><div class="sk sk-l w60"></div></div></div>
+      <div class="vcard" style="cursor:default"><div class="sk sk-t"></div><div class="vbody"><div class="sk sk-l w90"></div><div class="sk sk-l w60"></div></div></div>
+      <div class="vcard" style="cursor:default"><div class="sk sk-t"></div><div class="vbody"><div class="sk sk-l w90"></div><div class="sk sk-l w60"></div></div></div>
     </div>
   </section>
 
-  <!-- Social -->
-  <section class="social-band">
-    <div class="sec-header"><div><div class="sec-eyebrow">Topluluk</div><h2 class="sec-title">Bizi Takip Et</h2></div></div>
-    <div class="social-grid">
-      <a href="https://www.youtube.com/@P4Otopark" target="_blank" class="soc-card yt">
-        <div class="soc-icon">▶️</div>
-        <div><div class="soc-platform">YouTube</div><div class="soc-handle">P4 Otopark</div><div class="soc-count" id="yt-count"></div></div>
-      </a>
-      <a href="https://www.instagram.com/p4otopark" target="_blank" class="soc-card ig">
-        <div class="soc-icon">📷</div>
-        <div><div class="soc-platform">Instagram</div><div class="soc-handle">@p4otopark</div></div>
-      </a>
-      <a href="https://x.com/P4otopark" target="_blank" class="soc-card tw">
-        <div class="soc-icon">🐦</div>
-        <div><div class="soc-platform">Twitter / X</div><div class="soc-handle">@P4otopark</div></div>
-      </a>
-      <a href="https://linktr.ee/p4otopark" target="_blank" class="soc-card lt">
-        <div class="soc-icon">🔗</div>
-        <div><div class="soc-platform">Linktree</div><div class="soc-handle">p4otopark</div></div>
-      </a>
+  <section class="soc-band">
+    <div class="sec-hd"><div><div class="sec-eye">Topluluk</div><h2 class="sec-ttl">Bizi Takip Et</h2></div></div>
+    <div class="soc-grid">
+      <a href="https://www.youtube.com/@P4Otopark" target="_blank" class="soc-card yt"><div class="soc-ico">▶️</div><div><div class="soc-plat">YouTube</div><div class="soc-hnd">P4 Otopark</div><div class="soc-cnt" id="yt-cnt"></div></div></a>
+      <a href="https://www.instagram.com/p4otopark" target="_blank" class="soc-card ig"><div class="soc-ico">📷</div><div><div class="soc-plat">Instagram</div><div class="soc-hnd">@p4otopark</div></div></a>
+      <a href="https://x.com/P4otopark" target="_blank" class="soc-card tw"><div class="soc-ico">🐦</div><div><div class="soc-plat">Twitter / X</div><div class="soc-hnd">@P4otopark</div></div></a>
+      <a href="https://linktr.ee/p4otopark" target="_blank" class="soc-card lt"><div class="soc-ico">🔗</div><div><div class="soc-plat">Linktree</div><div class="soc-hnd">p4otopark</div></div></a>
     </div>
   </section>
 
   <div class="cta-band">
-    <div class="cta-eyebrow">Aramıza Katıl</div>
-    <h2 class="cta-title">GERÇEK GS TARAFTARI<br>BURADA!</h2>
-    <p class="cta-sub">Maç analizleri, transfer haberleri ve canlı yayınlar için abone ol. P4 Otopark ailesi seni bekliyor.</p>
+    <div class="cta-eye">Aramıza Katıl</div>
+    <h2 class="cta-ttl">GERÇEK GS TARAFTARI<br>BURADA!</h2>
+    <p class="cta-sub">Maç analizleri, transfer haberleri ve canlı yayınlar için abone ol.</p>
     <div class="cta-btns">
       <a href="https://www.youtube.com/@P4Otopark" target="_blank" class="btn-primary">▶ YouTube'da Abone Ol</a>
-      <button class="btn-ghost" onclick="goPage('live')">Canlı Yayına Git →</button>
+      <button class="btn-ghost" onclick="go('live')">Canlı Yayına Git →</button>
     </div>
   </div>
 </div>
 
-<!-- ═══════════ VIDEOS ═══════════ -->
+<!-- ═══ VIDEOS ═══ -->
 <div id="page-videos" class="page">
   <section>
-    <div class="sec-header"><div><div class="sec-eyebrow">Arşiv</div><h2 class="sec-title">Tüm Videolar</h2></div></div>
-    <div id="videos-err" class="err-banner" style="display:none">⚠ Videolar yüklenirken hata oluştu.</div>
-    <div class="video-grid" id="all-grid">
-      <div class="vcard" style="cursor:default"><div class="sk sk-thumb"></div><div class="vcard-body"><div class="sk sk-line w90"></div><div class="sk sk-line w60"></div></div></div>
-      <div class="vcard" style="cursor:default"><div class="sk sk-thumb"></div><div class="vcard-body"><div class="sk sk-line w90"></div><div class="sk sk-line w60"></div></div></div>
-      <div class="vcard" style="cursor:default"><div class="sk sk-thumb"></div><div class="vcard-body"><div class="sk sk-line w90"></div><div class="sk sk-line w60"></div></div></div>
-    </div>
-    <div style="text-align:center">
-      <button id="load-more-btn" class="btn-ghost" onclick="loadMore()">Daha Fazla Yükle</button>
+    <div class="sec-hd"><div><div class="sec-eye">Arşiv</div><h2 class="sec-ttl">Tüm Videolar</h2></div></div>
+    <div class="vgrid" id="all-grid">
+      <div class="vcard" style="cursor:default"><div class="sk sk-t"></div><div class="vbody"><div class="sk sk-l w90"></div><div class="sk sk-l w60"></div></div></div>
+      <div class="vcard" style="cursor:default"><div class="sk sk-t"></div><div class="vbody"><div class="sk sk-l w90"></div><div class="sk sk-l w60"></div></div></div>
+      <div class="vcard" style="cursor:default"><div class="sk sk-t"></div><div class="vbody"><div class="sk sk-l w90"></div><div class="sk sk-l w60"></div></div></div>
     </div>
   </section>
 </div>
 
-<!-- ═══════════ LIVE ═══════════ -->
+<!-- ═══ LIVE ═══ -->
 <div id="page-live" class="page">
   <section>
-    <div class="sec-header">
-      <div><div class="sec-eyebrow">Yayın Merkezi</div><h2 class="sec-title">Canlı Yayın</h2></div>
-      <div id="live-page-badge" style="display:none"><div class="live-badge"><div class="live-dot"></div>YAYIN AKTİF</div></div>
+    <div class="sec-hd">
+      <div><div class="sec-eye">Yayın Merkezi</div><h2 class="sec-ttl">Canlı Yayın</h2></div>
+      <div id="live-pg-badge" style="display:none"><div class="lbadge"><div class="ldot"></div>YAYIN AKTİF</div></div>
     </div>
-    <div id="live-player" class="live-embed-outer" style="display:none">
+    <div id="live-player" class="live-embed" style="display:none">
       <iframe id="live-iframe" allow="autoplay;encrypted-media" allowfullscreen></iframe>
     </div>
     <div id="no-live" class="no-live-card">
-      <div class="icon">📺</div>
+      <div class="ico">📺</div>
       <h3>Şu An Canlı Yayın Yok</h3>
-      <p>Bildirimlerini aç, bir sonraki yayını kaçırma!<br>Son yayınlar aşağıda listeleniyor.</p>
+      <p>Bildirimlerini aç, bir sonraki yayını kaçırma!</p>
       <a href="https://www.youtube.com/@P4Otopark" target="_blank" class="btn-primary" style="display:inline-flex;margin-top:1.5rem">YouTube Kanalına Git</a>
     </div>
-    <div><div class="sec-eyebrow" style="margin-bottom:1.5rem">Son Canlı Yayınlar</div>
-    <div class="video-grid" id="live-grid">
-      <div class="vcard" style="cursor:default"><div class="sk sk-thumb"></div><div class="vcard-body"><div class="sk sk-line w90"></div></div></div>
-      <div class="vcard" style="cursor:default"><div class="sk sk-thumb"></div><div class="vcard-body"><div class="sk sk-line w90"></div></div></div>
-      <div class="vcard" style="cursor:default"><div class="sk sk-thumb"></div><div class="vcard-body"><div class="sk sk-line w90"></div></div></div>
-    </div></div>
+    <div class="sec-eye" style="margin-bottom:1.5rem">Son Yayınlar</div>
+    <div class="vgrid" id="live-grid">
+      <div class="vcard" style="cursor:default"><div class="sk sk-t"></div><div class="vbody"><div class="sk sk-l w90"></div></div></div>
+      <div class="vcard" style="cursor:default"><div class="sk sk-t"></div><div class="vbody"><div class="sk sk-l w90"></div></div></div>
+      <div class="vcard" style="cursor:default"><div class="sk sk-t"></div><div class="vbody"><div class="sk sk-l w90"></div></div></div>
+    </div>
   </section>
 </div>
 
-<!-- ═══════════ ABOUT ═══════════ -->
+<!-- ═══ ABOUT ═══ -->
 <div id="page-about" class="page">
   <div class="about-hero">
     <div class="about-hex">P4</div>
     <h1>P4 OTOPARK</h1>
     <p>Galatasaray odaklı, taraftar ruhlu, bağımsız dijital medya platformu.<br><br>
     Maç analizleri, transfer gündemi, canlı yayınlar ve dürüst yorumlarla Galatasaray'ı konuşuyoruz.<br><br>
-    <strong style="color:var(--yellow)">Cace, Maraz ve ekip</strong> tarafından kurulan bu kanal; Ali Sami Yen Arena'nın P4 katından, tribünden gelip tribün için konuşuyor.</p>
+    <strong style="color:var(--yellow)">Cace, Maraz ve ekip</strong> tarafından kurulan bu kanal; Ali Sami Yen'in P4 katından, tribünden gelip tribün için konuşuyor.</p>
   </div>
-  <div class="values-grid">
-    <div class="val-card"><div class="val-icon">🔥</div><div class="val-title">Taraftar Ruhu</div><div class="val-text">Kurumsal değil, gerçek fan bakış açısıyla. Duygusal, dürüst ve tutkuluyuz. Tribünden geliyoruz.</div></div>
-    <div class="val-card"><div class="val-icon">📊</div><div class="val-title">Analitik Bakış</div><div class="val-text">Sadece tepki değil, veri ve taktik analiz. Futbolu derinlemesine anlayarak konuşuyoruz.</div></div>
-    <div class="val-card"><div class="val-icon">📺</div><div class="val-title">Canlı Bağlantı</div><div class="val-text">Maç sonrası anında canlı yayın. Topluluğunuzla birlikte, gerçek zamanlı ve interaktif.</div></div>
-    <div class="val-card"><div class="val-icon">🏆</div><div class="val-title">Sadece Galatasaray</div><div class="val-text">Her içerik, her yorum, her analiz tek bir kulüp için. Bağımsız ve özgür sesiz.</div></div>
+  <div class="val-grid">
+    <div class="val-card"><div class="val-ico">🔥</div><div class="val-ttl">Taraftar Ruhu</div><div class="val-txt">Kurumsal değil, gerçek fan bakış açısıyla. Duygusal, dürüst ve tutkuluyuz.</div></div>
+    <div class="val-card"><div class="val-ico">📊</div><div class="val-ttl">Analitik Bakış</div><div class="val-txt">Sadece tepki değil, veri ve taktik analiz. Futbolu derinlemesine anlıyoruz.</div></div>
+    <div class="val-card"><div class="val-ico">📺</div><div class="val-ttl">Canlı Bağlantı</div><div class="val-txt">Maç sonrası anında canlı yayın. Gerçek zamanlı, interaktif.</div></div>
+    <div class="val-card"><div class="val-ico">🏆</div><div class="val-ttl">Sadece Galatasaray</div><div class="val-txt">Her içerik, her yorum, her analiz tek bir kulüp için. Bağımsız ve özgür.</div></div>
   </div>
   <div class="cta-band">
-    <div class="cta-eyebrow">Kanalımız</div>
-    <h2 class="cta-title">TOPLULUĞA KATIL</h2>
+    <div class="cta-eye">Kanalımız</div>
+    <h2 class="cta-ttl">TOPLULUĞA KATIL</h2>
     <p class="cta-sub">YouTube kanalımıza abone ol, sosyal medyadan takip et.</p>
     <div class="cta-btns">
       <a href="https://www.youtube.com/@P4Otopark" target="_blank" class="btn-primary">▶ YouTube'a Git</a>
-      <button class="btn-ghost" onclick="goPage('contact')">Bize Ulaş →</button>
+      <button class="btn-ghost" onclick="go('contact')">Bize Ulaş →</button>
     </div>
   </div>
 </div>
 
-<!-- ═══════════ CONTACT ═══════════ -->
+<!-- ═══ CONTACT ═══ -->
 <div id="page-contact" class="page">
-  <div class="contact-wrap">
+  <div class="con-wrap">
     <div style="margin-bottom:2.5rem">
-      <div class="sec-eyebrow" style="margin-bottom:.5rem">İletişim</div>
-      <h2 class="sec-title" style="font-size:clamp(2rem,5vw,3rem)">Bize Ulaşın</h2>
-      <p style="color:var(--muted);font-size:.9rem;margin-top:.75rem;line-height:1.75">İş birliği ve sponsorluk için sosyal medya kanallarımızdan DM atabilirsiniz.</p>
+      <div class="sec-eye" style="margin-bottom:.5rem">İletişim</div>
+      <h2 class="sec-ttl" style="font-size:clamp(2rem,5vw,3rem)">Bize Ulaşın</h2>
+      <p style="color:var(--muted);font-size:.9rem;margin-top:.75rem;line-height:1.75">Sponsorluk ve iş birlikleri için sosyal medyadan DM atabilirsiniz.</p>
     </div>
-    <a href="https://www.youtube.com/@P4Otopark" target="_blank" class="con-card">
-      <div class="con-icon">▶️</div><div><div class="con-platform">YouTube</div><div class="con-val">@P4Otopark</div><div class="con-note">Abone ol, bildirimlerini aç</div></div>
-    </a>
-    <a href="https://www.instagram.com/p4otopark" target="_blank" class="con-card">
-      <div class="con-icon">📷</div><div><div class="con-platform">Instagram</div><div class="con-val">@p4otopark</div><div class="con-note">4.6K takipçi • DM açık</div></div>
-    </a>
-    <a href="https://x.com/P4otopark" target="_blank" class="con-card">
-      <div class="con-icon">🐦</div><div><div class="con-platform">Twitter / X</div><div class="con-val">@P4otopark</div><div class="con-note">Anlık gündem ve maç paylaşımları</div></div>
-    </a>
-    <a href="https://linktr.ee/p4otopark" target="_blank" class="con-card">
-      <div class="con-icon">🔗</div><div><div class="con-platform">Linktree</div><div class="con-val">linktr.ee/p4otopark</div><div class="con-note">Tüm bağlantılar tek yerde</div></div>
-    </a>
+    <a href="https://www.youtube.com/@P4Otopark" target="_blank" class="con-card"><div class="con-ico">▶️</div><div><div class="con-plat">YouTube</div><div class="con-val">@P4Otopark</div><div class="con-note">Abone ol, bildirimlerini aç</div></div></a>
+    <a href="https://www.instagram.com/p4otopark" target="_blank" class="con-card"><div class="con-ico">📷</div><div><div class="con-plat">Instagram</div><div class="con-val">@p4otopark</div><div class="con-note">DM açık</div></div></a>
+    <a href="https://x.com/P4otopark" target="_blank" class="con-card"><div class="con-ico">🐦</div><div><div class="con-plat">Twitter / X</div><div class="con-val">@P4otopark</div><div class="con-note">Anlık gündem paylaşımları</div></div></a>
+    <a href="https://linktr.ee/p4otopark" target="_blank" class="con-card"><div class="con-ico">🔗</div><div><div class="con-plat">Linktree</div><div class="con-val">linktr.ee/p4otopark</div><div class="con-note">Tüm bağlantılar tek yerde</div></div></a>
     <div style="padding:1.5rem;background:var(--card);border:1px solid var(--border);border-radius:12px;margin-top:1.5rem">
-      <div class="sec-eyebrow" style="margin-bottom:.75rem">İş Birliği</div>
+      <div class="sec-eye" style="margin-bottom:.75rem">İş Birliği</div>
       <p style="font-size:.88rem;color:var(--muted);line-height:1.75">Reklam, sponsorluk ve marka iş birlikleri için Instagram ya da Twitter'dan DM atabilirsiniz.</p>
     </div>
   </div>
@@ -537,355 +453,212 @@ footer{background:var(--dark);border-top:1px solid var(--border);padding:clamp(2
 
 <!-- FOOTER -->
 <footer>
-  <div class="footer-grid">
-    <div class="footer-brand">
-      <div class="nav-logo" onclick="goPage('home')" style="display:inline-flex">
+  <div class="ft-grid">
+    <div class="ft-brand">
+      <div class="nav-logo" onclick="go('home')" style="display:inline-flex">
         <div class="logo-hex">P4</div>
-        <div class="logo-wordmark">P4 <span>OTOPARK</span></div>
+        <div class="logo-wm">P4 <span>OTOPARK</span></div>
       </div>
       <p>Galatasaray odaklı taraftar medya platformu. Maç analizleri, transfer gündemi ve canlı yayınlar.</p>
     </div>
-    <div class="footer-col"><h4>Sayfalar</h4><ul>
-      <li><a onclick="goPage('home')">Ana Sayfa</a></li>
-      <li><a onclick="goPage('videos')">Videolar</a></li>
-      <li><a onclick="goPage('live')">Canlı Yayın</a></li>
-      <li><a onclick="goPage('about')">Hakkında</a></li>
+    <div class="ft-col"><h4>Sayfalar</h4><ul>
+      <li><a onclick="go('home')">Ana Sayfa</a></li>
+      <li><a onclick="go('videos')">Videolar</a></li>
+      <li><a onclick="go('live')">Canlı Yayın</a></li>
+      <li><a onclick="go('about')">Hakkında</a></li>
     </ul></div>
-    <div class="footer-col"><h4>Sosyal Medya</h4><ul>
+    <div class="ft-col"><h4>Sosyal Medya</h4><ul>
       <li><a href="https://www.youtube.com/@P4Otopark" target="_blank">YouTube</a></li>
       <li><a href="https://www.instagram.com/p4otopark" target="_blank">Instagram</a></li>
       <li><a href="https://x.com/P4otopark" target="_blank">Twitter / X</a></li>
       <li><a href="https://linktr.ee/p4otopark" target="_blank">Linktree</a></li>
     </ul></div>
-    <div class="footer-col"><h4>Kanal</h4><ul>
+    <div class="ft-col"><h4>Kanal</h4><ul>
       <li><a href="https://www.youtube.com/@P4Otopark" target="_blank">Abone Ol</a></li>
-      <li><a onclick="goPage('contact')">İletişim</a></li>
+      <li><a onclick="go('contact')">İletişim</a></li>
     </ul></div>
   </div>
-  <div class="footer-bottom">
-    <div class="footer-copy">© 2026 P4 Otopark. Yapıldı <span>❤️</span> ile.</div>
+  <div class="ft-bot">
+    <div class="ft-copy">© 2026 P4 Otopark. Yapıldı <span>❤️</span> ile.</div>
     <div style="display:flex;align-items:center;gap:1.5rem">
-      <span id="cache-info" style="font-size:.75rem;color:var(--dimmed)"></span>
-      <div class="footer-badge">Galatasaray Fan Media</div>
+      <span id="cache-hint" class="cache-hint"></span>
+      <div class="ft-badge">Galatasaray Fan Media</div>
     </div>
   </div>
 </footer>
 
 <script>
-// ─── CONFIG ───
-const YT_API_KEY = 'AIzaSyAQtXoGfxf1WVhUBHt-FfHqnYcMU_2tO2I';
-const CACHE_TTL_MS = 6 * 60 * 60 * 1000; // 6 saat
-const CACHE_KEY    = 'p4_yt_cache_v2';
-
 // ─── STATE ───
-let channelId = '';
-let uploadsId = '';
-let allVideos = [];
+let videos = [];
 let nextToken = null;
-
-// ─── CACHE HELPERS ───
-function cacheSet(data) {
-  try {
-    localStorage.setItem(CACHE_KEY, JSON.stringify({ ts: Date.now(), data }));
-  } catch(e) { /* localStorage dolu olabilir, önemli değil */ }
-}
-
-function cacheGet() {
-  try {
-    const raw = localStorage.getItem(CACHE_KEY);
-    if (!raw) return null;
-    const { ts, data } = JSON.parse(raw);
-    if (Date.now() - ts > CACHE_TTL_MS) { localStorage.removeItem(CACHE_KEY); return null; }
-    return data;
-  } catch(e) { return null; }
-}
-
-// ─── PROGRESS HELPERS ───
-function setProgress(pct, label) {
-  document.getElementById('loading-bar').style.width = pct + '%';
-  document.getElementById('loading-label').textContent = label;
-}
-
-function hideLoadingScreen() {
-  const s = document.getElementById('loading-screen');
-  s.classList.add('fade-out');
-  setTimeout(() => s.style.display = 'none', 450);
-}
+let fetchedAt = null;
 
 // ─── BOOT ───
-window.addEventListener('DOMContentLoaded', async () => {
-  // Cache'den yükle — varsa direkt göster, API çağrısı yok
-  const cached = cacheGet();
-  if (cached) {
-    setProgress(80, 'Cache\'den yükleniyor...');
-    channelId = cached.channelId;
-    uploadsId = cached.uploadsId;
-    nextToken = cached.nextToken;
-    applyChannelStats(cached.stats);
-    renderInitial(cached.videos);
-    if (cached.live) applyLive(cached.live);
-    setProgress(100, 'Hazır!');
-    setTimeout(hideLoadingScreen, 200);
-    return;
-  }
+window.addEventListener('DOMContentLoaded', boot);
 
-  // Cache yok — API'dan çek ve kaydet
+async function boot() {
+  prog(10, 'Yükleniyor...');
   try {
-    setProgress(10, 'Kanal aranıyor...');
-    await resolveChannel();
+    prog(30, 'Veriler çekiliyor...');
+    // Tek istek → /api/youtube (Vercel CDN cache'li)
+    const res = await fetch('/api/youtube');
+    if (!res.ok) throw new Error(`API ${res.status}`);
+    const data = await res.json();
+    if (data.error) throw new Error(data.error);
 
-    setProgress(35, 'Kanal bilgileri çekiliyor...');
-    const stats = await fetchChannelStats();
+    prog(80, 'Render ediliyor...');
+    videos   = data.videos   || [];
+    nextToken = data.nextPageToken || null;
+    fetchedAt = data.fetchedAt;
 
-    setProgress(60, 'Videolar yükleniyor...');
-    await fetchVideos();
+    renderAll(data);
 
-    setProgress(88, 'Canlı yayın kontrol ediliyor...');
-    const live = await checkLive();
-
-    // Cache'e yaz
-    cacheSet({ channelId, uploadsId, nextToken, stats, videos: allVideos, live: live || null });
-
-    setProgress(100, 'Hazır!');
-    setTimeout(hideLoadingScreen, 300);
-  } catch (e) {
-    console.error('YouTube API hatası:', e);
-    setProgress(100, 'Bağlantı hatası');
-    setTimeout(hideLoadingScreen, 1000);
+    prog(100, 'Hazır!');
+    setTimeout(hideLoader, 250);
+  } catch(e) {
+    console.error(e);
+    // Hata durumunda loading screen'i kaldır, kullanıcı boş sayfayı görsün
+    prog(100, 'Hata oluştu: ' + e.message);
+    setTimeout(hideLoader, 1200);
   }
-});
-
-// ─── YT FETCH ───
-async function ytGet(url) {
-  const r = await fetch(url);
-  const d = await r.json();
-  if (d.error) throw new Error(d.error.message);
-  return d;
 }
 
-// ─── CHANNEL ID RESOLUTION ───
-async function resolveChannel() {
-  // First try: search by channel name
-  const s = await ytGet(
-    `https://www.googleapis.com/youtube/v3/search?part=snippet&type=channel&q=P4+Otopark+Galatasaray&maxResults=5&key=${YT_API_KEY}`
-  );
-  if (!s.items?.length) throw new Error('Kanal bulunamadı');
+// ─── RENDER ALL ───
+function renderAll(data) {
+  const { stats, videos, live } = data;
 
-  // Pick best match
-  const match = s.items.find(i =>
-    i.snippet.channelTitle.toLowerCase().includes('p4 otopark') ||
-    i.snippet.channelTitle.toLowerCase().includes('p4otopark')
-  ) || s.items[0];
+  if (!videos?.length) return;
 
-  channelId = match.snippet.channelId;
+  // ── Stats Bar
+  document.getElementById('stats-bar').classList.add('visible');
+  document.getElementById('sb-avatar').src  = stats.avatar;
+  document.getElementById('sb-subs').textContent  = fmt(stats.subs);
+  document.getElementById('sb-views').textContent = fmt(stats.views);
+  document.getElementById('sb-vids').textContent  = fmt(stats.vids);
+  document.getElementById('yt-cnt').textContent   = fmt(stats.subs) + ' abone';
 
-  // Get uploads playlist ID
-  const ch = await ytGet(
-    `https://www.googleapis.com/youtube/v3/channels?part=contentDetails&id=${channelId}&key=${YT_API_KEY}`
-  );
-  uploadsId = ch.items[0].contentDetails.relatedPlaylists.uploads;
-}
+  // ── Hero (first video)
+  const v0 = videos[0];
+  const heroImg = document.getElementById('hero-img');
+  heroImg.onload = () => heroImg.classList.add('in');
+  heroImg.src = v0.thumb;
+  document.getElementById('hero-ttl').innerHTML =
+    trunc(v0.title, 55).replace(/galatasaray/gi, '<em>Galatasaray</em>');
+  document.getElementById('hero-desc').textContent = trunc(v0.desc, 180);
+  document.getElementById('hero-btn').href = yt(v0.id);
 
-// ─── CHANNEL STATS ───
-async function fetchChannelStats() {
-  const d = await ytGet(
-    `https://www.googleapis.com/youtube/v3/channels?part=snippet,statistics&id=${channelId}&key=${YT_API_KEY}`
-  );
-  const ch = d.items[0];
-  const stats = {
-    avatar: ch.snippet.thumbnails?.medium?.url || '',
-    subs:   ch.statistics.subscriberCount,
-    views:  ch.statistics.viewCount,
-    vids:   ch.statistics.videoCount,
-  };
-  applyChannelStats(stats);
-  return stats;
-}
+  // ── Featured
+  document.getElementById('featured-area').innerHTML = featuredHTML(v0);
 
-function applyChannelStats(stats) {
-  document.getElementById('stats-bar').style.display = 'flex';
-  document.getElementById('ch-avatar').src           = stats.avatar;
-  document.getElementById('stat-subs').textContent   = fmt(stats.subs);
-  document.getElementById('stat-views').textContent  = fmt(stats.views);
-  document.getElementById('stat-vids').textContent   = fmt(stats.vids);
-  document.getElementById('yt-count').textContent    = fmt(stats.subs) + ' abone';
-}
-
-// ─── VIDEOS ───
-async function fetchVideos(token) {
-  let url = `https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&playlistId=${uploadsId}&maxResults=24&key=${YT_API_KEY}`;
-  if (token) url += '&pageToken=' + token;
-
-  const pl = await ytGet(url);
-  nextToken = pl.nextPageToken || null;
-
-  const ids = pl.items.map(i => i.snippet.resourceId.videoId).filter(Boolean).join(',');
-  if (!ids) return;
-
-  const vd = await ytGet(
-    `https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails,statistics,liveStreamingDetails&id=${ids}&key=${YT_API_KEY}`
+  // ── Home grid (videos 1–6)
+  document.getElementById('home-grid').innerHTML = '';
+  videos.slice(1, 7).forEach(v =>
+    document.getElementById('home-grid').appendChild(makeCard(v))
   );
 
-  const videos = vd.items.map(v => ({
-    id:           v.id,
-    title:        v.snippet.title,
-    desc:         (v.snippet.description || '').slice(0, 240),
-    thumb:        v.snippet.thumbnails?.maxres?.url
-                  || v.snippet.thumbnails?.high?.url
-                  || v.snippet.thumbnails?.medium?.url
-                  || '',
-    published:    v.snippet.publishedAt,
-    duration:     parseDur(v.contentDetails?.duration),
-    views:        v.statistics?.viewCount,
-    likes:        v.statistics?.likeCount,
-    isLive:       v.snippet.liveBroadcastContent === 'live',
-    liveViewers:  v.liveStreamingDetails?.concurrentViewers,
-  }));
+  // ── All videos grid
+  document.getElementById('all-grid').innerHTML = '';
+  videos.forEach(v =>
+    document.getElementById('all-grid').appendChild(makeCard(v))
+  );
 
-  if (!token) {
-    allVideos = videos;
-    renderInitial(videos);
-  } else {
-    allVideos = [...allVideos, ...videos];
-    appendToAllGrid(videos);
+  // ── Live page grid
+  document.getElementById('live-grid').innerHTML = '';
+  videos.slice(0, 6).forEach(v =>
+    document.getElementById('live-grid').appendChild(makeCard(v))
+  );
+
+  // ── Live stream
+  if (live) {
+    document.getElementById('live-bar').style.display = 'flex';
+    document.getElementById('live-bar-ttl').textContent = trunc(live.title, 65);
+    document.getElementById('live-bar-lnk').href = yt(live.id);
+    document.getElementById('live-pg-badge').style.display = 'block';
+    document.getElementById('no-live').style.display = 'none';
+    document.getElementById('live-player').style.display = 'block';
+    document.getElementById('live-iframe').src =
+      `https://www.youtube.com/embed/${live.id}?autoplay=0&rel=0`;
   }
 
-  document.getElementById('load-more-btn').style.display = nextToken ? 'block' : 'none';
+  // ── Cache hint in footer
+  if (fetchedAt) {
+    const el = document.getElementById('cache-hint');
+    const agoMin = Math.round((Date.now() - fetchedAt) / 60000);
+    el.textContent = `Veriden ${agoMin < 1 ? 'az önce' : agoMin + ' dk önce'} güncellendi`;
+  }
 }
 
-async function loadMore() {
-  if (!nextToken) return;
-  const btn = document.getElementById('load-more-btn');
-  btn.textContent = 'Yükleniyor...';
-  btn.disabled = true;
-  try { await fetchVideos(nextToken); }
-  catch(e) { console.error(e); }
-  btn.textContent = 'Daha Fazla Yükle';
-  btn.disabled = false;
-}
-
-// ─── LIVE STREAM CHECK ───
-async function checkLive() {
-  const d = await ytGet(
-    `https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=${channelId}&eventType=live&type=video&maxResults=1&key=${YT_API_KEY}`
-  );
-  if (!d.items?.length) return null;
-  const v   = d.items[0];
-  const live = { id: v.id.videoId, title: v.snippet.title };
-  applyLive(live);
-  return live;
-}
-
-function applyLive(live) {
-  if (!live) return;
-  const ttl = trunc(live.title, 65);
-  document.getElementById('live-bar').style.display  = 'flex';
-  document.getElementById('live-bar-title').textContent = ttl;
-  document.getElementById('live-bar-link').href      = `https://www.youtube.com/watch?v=${live.id}`;
-  document.getElementById('live-page-badge').style.display = 'block';
-  document.getElementById('no-live').style.display   = 'none';
-  const player = document.getElementById('live-player');
-  player.style.display = 'block';
-  document.getElementById('live-iframe').src = `https://www.youtube.com/embed/${live.id}?autoplay=0&rel=0`;
-}
-
-// ─── RENDER ───
-function renderInitial(videos) {
-  if (!videos.length) return;
-  const first = videos[0];
-
-  // Hero
-  document.getElementById('hero-thumb').src = first.thumb;
-  document.getElementById('hero-title').innerHTML = trunc(first.title, 55)
-    .replace(/galatasaray/gi, '<em>Galatasaray</em>');
-  document.getElementById('hero-desc').textContent = trunc(first.desc, 180);
-  document.getElementById('hero-watch-btn').href = ytLink(first.id);
-
-  // Featured
-  renderFeatured(first);
-
-  // Home grid (videos 1–6, skip index 0 which is hero)
-  const homeGrid = document.getElementById('home-grid');
-  homeGrid.innerHTML = '';
-  videos.slice(1, 7).forEach(v => homeGrid.appendChild(makeCard(v)));
-
-  // All videos grid
-  const allGrid = document.getElementById('all-grid');
-  allGrid.innerHTML = '';
-  videos.forEach(v => allGrid.appendChild(makeCard(v)));
-
-  // Live page recent grid
-  const liveGrid = document.getElementById('live-grid');
-  liveGrid.innerHTML = '';
-  videos.slice(0, 6).forEach(v => liveGrid.appendChild(makeCard(v)));
-}
-
-function appendToAllGrid(videos) {
-  const g = document.getElementById('all-grid');
-  videos.forEach(v => g.appendChild(makeCard(v)));
-}
-
-function renderFeatured(v) {
-  document.getElementById('featured-wrap').innerHTML = `
-    <a href="${ytLink(v.id)}" target="_blank" class="feat-thumb">
-      <img src="${v.thumb}" alt="${esc(v.title)}" loading="lazy">
-      <div class="feat-thumb-overlay">
-        <div class="feat-play">
-          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-        </div>
-      </div>
+// ─── FEATURED HTML ───
+function featuredHTML(v) {
+  return `
+  <a href="${yt(v.id)}" target="_blank" class="feat-thumb">
+    <img src="${v.thumb}" alt="${esc(v.title)}" loading="lazy">
+    <div class="feat-ov">
+      <div class="feat-play"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div>
+    </div>
+  </a>
+  <div class="feat-info">
+    <div class="feat-tag">🔥 Son Video</div>
+    <h3 class="feat-ttl">${esc(trunc(v.title, 80))}</h3>
+    <p class="feat-desc">${esc(trunc(v.desc, 200))}</p>
+    <div class="feat-stats">
+      <div class="fst"><div class="fst-val">${fmt(v.views)}</div><div class="fst-lbl">İzlenme</div></div>
+      <div class="fst"><div class="fst-val">${fmt(v.likes)}</div><div class="fst-lbl">Beğeni</div></div>
+      <div class="fst"><div class="fst-val">${fmtDate(v.published)}</div><div class="fst-lbl">Tarih</div></div>
+    </div>
+    <a href="${yt(v.id)}" target="_blank" class="btn-primary" style="align-self:flex-start;margin-top:.5rem">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>Şimdi İzle
     </a>
-    <div class="feat-info">
-      <div class="feat-tag">🔥 Son Video</div>
-      <h3 class="feat-title">${esc(trunc(v.title, 80))}</h3>
-      <p class="feat-desc">${esc(trunc(v.desc, 200))}</p>
-      <div class="feat-stats">
-        <div class="feat-stat"><div class="feat-stat-val">${fmt(v.views)}</div><div class="feat-stat-lbl">İzlenme</div></div>
-        <div class="feat-stat"><div class="feat-stat-val">${fmt(v.likes)}</div><div class="feat-stat-lbl">Beğeni</div></div>
-        <div class="feat-stat"><div class="feat-stat-val">${fmtDate(v.published)}</div><div class="feat-stat-lbl">Tarih</div></div>
-      </div>
-      <a href="${ytLink(v.id)}" target="_blank" class="btn-primary" style="align-self:flex-start;margin-top:.5rem">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>Şimdi İzle
-      </a>
-    </div>`;
+  </div>`;
 }
 
+// ─── VIDEO CARD ───
 function makeCard(v) {
+  const dur = parseDur(v.duration);
   const a = document.createElement('a');
   a.className = 'vcard';
-  a.href      = ytLink(v.id);
-  a.target    = '_blank';
+  a.href = yt(v.id);
+  a.target = '_blank';
   a.innerHTML = `
-    <div class="vcard-thumb">
+    <div class="vthumb">
       <img src="${v.thumb}" alt="${esc(v.title)}" loading="lazy" onerror="this.style.opacity='.2'">
-      <div class="vcard-overlay">
-        <div class="play-circle"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div>
-      </div>
+      <div class="vov"><div class="pcirc"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div></div>
       ${v.isLive
-        ? '<div class="vcard-live-tag"><div class="live-badge"><div class="live-dot"></div>CANLI</div></div>'
-        : `<div class="vcard-dur">${v.duration}</div>`}
+        ? '<div class="vlivetag"><div class="lbadge"><div class="ldot"></div>CANLI</div></div>'
+        : `<div class="vdur">${dur}</div>`}
     </div>
-    <div class="vcard-body">
-      <div class="vcard-meta">
-        <span class="vcard-cat">${guessCategory(v.title)}</span>
-        <span class="vcard-views">${v.isLive
+    <div class="vbody">
+      <div class="vmeta">
+        <span class="vcat">${cat(v.title)}</span>
+        <span class="vviews">${v.isLive
           ? (v.liveViewers ? fmt(v.liveViewers) + ' izleyici' : 'Canlı')
           : fmt(v.views) + ' görüntüleme'}</span>
       </div>
-      <div class="vcard-title">${esc(trunc(v.title, 72))}</div>
-      <div class="vcard-date">${v.isLive ? 'Şu an yayında' : fmtDate(v.published)}</div>
+      <div class="vtitle">${esc(trunc(v.title, 72))}</div>
+      <div class="vdate">${v.isLive ? 'Şu an yayında' : fmtDate(v.published)}</div>
     </div>`;
   return a;
 }
 
+// ─── LOADING ───
+function prog(pct, lbl) {
+  document.getElementById('load-bar').style.width = pct + '%';
+  document.getElementById('load-lbl').textContent = lbl;
+}
+function hideLoader() {
+  const s = document.getElementById('loading-screen');
+  s.classList.add('out');
+  setTimeout(() => s.style.display = 'none', 450);
+}
+
 // ─── HELPERS ───
-function ytLink(id) { return `https://www.youtube.com/watch?v=${id}`; }
+function yt(id)  { return `https://www.youtube.com/watch?v=${id}`; }
 
 function fmt(n) {
   if (!n) return '—';
   n = parseInt(n);
-  if (n >= 1_000_000) return (n / 1_000_000).toFixed(1) + 'M';
-  if (n >= 1_000)     return (n / 1_000).toFixed(1) + 'K';
+  if (n >= 1_000_000) return (n/1_000_000).toFixed(1)+'M';
+  if (n >= 1_000)     return (n/1_000).toFixed(1)+'K';
   return n.toString();
 }
 
@@ -893,65 +666,46 @@ function parseDur(iso) {
   if (!iso || iso === 'P0D') return '';
   const m = iso.match(/PT(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?/);
   if (!m) return '';
-  const h = +( m[1] || 0), mn = +(m[2] || 0), s = +(m[3] || 0);
-  return h > 0
+  const h=+(m[1]||0), mn=+(m[2]||0), s=+(m[3]||0);
+  return h>0
     ? `${h}:${String(mn).padStart(2,'0')}:${String(s).padStart(2,'0')}`
     : `${mn}:${String(s).padStart(2,'0')}`;
 }
 
 function fmtDate(iso) {
   if (!iso) return '';
-  return new Date(iso).toLocaleDateString('tr-TR', { day: 'numeric', month: 'long', year: 'numeric' });
+  return new Date(iso).toLocaleDateString('tr-TR',{day:'numeric',month:'long',year:'numeric'});
 }
 
-function trunc(s, n) { return s && s.length > n ? s.slice(0, n) + '…' : (s || ''); }
+function trunc(s, n) { return s&&s.length>n ? s.slice(0,n)+'…' : (s||''); }
 
 function esc(s) {
-  return (s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
 
-function guessCategory(t) {
-  t = (t || '').toLowerCase();
-  if (/transfer|bonservis|imza|dönemi|bomba/.test(t)) return 'Transfer';
-  if (/canlı|live|disko|yayın/.test(t))               return 'Canlı Yayın';
-  if (/maç|derbi|gol|sonu|kaybettik|yendik/.test(t))  return 'Maç Sonu';
-  if (/son dakika|gündem|haber/.test(t))               return 'Gündem';
-  if (/analiz|taktik|değerlendirme/.test(t))           return 'Analiz';
+function cat(t) {
+  t = (t||'').toLowerCase();
+  if (/transfer|bonservis|imza/.test(t))           return 'Transfer';
+  if (/canlı|live|disko|yayın/.test(t))            return 'Canlı Yayın';
+  if (/maç|derbi|gol|sonu|kaybettik|yendik/.test(t)) return 'Maç Sonu';
+  if (/son dakika|gündem|haber/.test(t))           return 'Gündem';
+  if (/analiz|taktik|değerlendirme/.test(t))       return 'Analiz';
   return 'İçerik';
 }
 
 // ─── NAV ───
-function goPage(id) {
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  document.getElementById('page-' + id).classList.add('active');
-  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-  const b = document.getElementById('nav-' + id);
-  if (b) b.classList.add('active');
-  window.scrollTo({ top: 0, behavior: 'smooth' });
+function go(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('on'));
+  document.getElementById('page-' + id).classList.add('on');
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('on'));
+  const b = document.getElementById('nb-' + id);
+  if (b) b.classList.add('on');
+  window.scrollTo({top:0,behavior:'smooth'});
 }
 
 function toggleMob() {
-  document.getElementById('mob-nav').classList.toggle('open');
+  document.getElementById('mob-nav').classList.toggle('on');
 }
-
-// ─── CACHE INFO ───
-function updateCacheInfo() {
-  try {
-    const raw = localStorage.getItem(CACHE_KEY);
-    if (!raw) return;
-    const { ts } = JSON.parse(raw);
-    const agoMin = Math.round((Date.now() - ts) / 60000);
-    const expMin = Math.round((CACHE_TTL_MS - (Date.now() - ts)) / 60000);
-    const el = document.getElementById('cache-info');
-    if (el) {
-      el.textContent = `Son güncelleme: ${agoMin < 1 ? 'az önce' : agoMin + ' dk önce'} • ${expMin} dk sonra yenilenir`;
-      el.style.cursor = 'pointer';
-      el.title = 'Şimdi yenile';
-      el.onclick = () => { localStorage.removeItem(CACHE_KEY); location.reload(); };
-    }
-  } catch(e) {}
-}
-setTimeout(updateCacheInfo, 600);
 </script>
 </body>
 </html>
